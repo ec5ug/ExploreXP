@@ -7,7 +7,7 @@ def home(request):
 
 
 def map(request):
-    key = env.API_KEY
+    key = request.session.get("API_KEY")
     context = {
         'key':key,
     }
