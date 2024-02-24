@@ -21,4 +21,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', views.home, name='home'),
     path('map/', views.map, name="map"),
+    path('add_place', views.add_place, name="add_place")
 ]

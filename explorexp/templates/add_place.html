@@ -1,0 +1,128 @@
+{% extends 'mapBase.html' %}
+{% load static %}
+{% block content %}
+
+<head>
+    <title>Add Place</title>
+</head>
+<script>
+    var map;
+    var marker;
+
+    function initMap() {
+        // Define your Google Maps initialization logic here
+        var mapOptions = {
+            center: {lat: 38.0336, lng: -78.5080},
+            zoom: 15
+        };
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        // Add click event listener to the map
+        map.addListener('click', function(event) {
+            placeMarker(event.latLng);
+            displayPlaceName(event.latLng);
+        });
+    }
+
+    // Function to place marker on the map
+    function placeMarker(location) {
+        // Remove existing marker if it exists
+        if (marker) {
+            marker.setMap(null);
+        }
+
+        marker = new google.maps.Marker({
+            position: location,
+            map: map
+        });
+
+        // Update form fields with latitude and longitude values
+        document.getElementById('id_lat').value = location.lat();
+        document.getElementById('id_long').value = location.lng();
+    }
+
+    // Function to display place name at the bottom of the screen
+function displayPlaceName(location) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'location': location }, function(results, status) {
+        if (status === 'OK') {
+            if (results[0]) {
+                var placeName = '';
+                // Iterate through address components
+                for (var i = 0; i < results[0].address_components.length; i++) {
+                    var addressComponent = results[0].address_components[i];
+                    // Check for types representing the name of the place
+                    if (addressComponent.types.includes('establishment') ||
+                        addressComponent.types.includes('point_of_interest') ||
+                        addressComponent.types.includes('premise') ||
+                        addressComponent.types.includes('natural_feature') ||
+                        addressComponent.types.includes('park') ||
+                        addressComponent.types.includes('airport') ||
+                        addressComponent.types.includes('transit_station') ||
+                        addressComponent.types.includes('subway_station') ||
+                        addressComponent.types.includes('train_station') ||
+                        addressComponent.types.includes('bus_station')) {
+                        placeName = addressComponent.short_name;
+
+                        break;  // Stop iteration after finding a suitable type
+                    }
+                }
+                // If a place name is found, display it; otherwise, use formatted address
+                if (placeName) {
+                    document.getElementById('placeName').innerText = placeName;
+                } else {
+                    var formattedAddress = results[0].formatted_address;
+                    document.getElementById('placeName').innerText = formattedAddress;
+                }
+            } else {
+                document.getElementById('placeName').innerText = 'No place found';
+            }
+        } else {
+            document.getElementById('placeName').innerText = 'Geocoder failed due to: ' + status;
+        }
+    });
+}
+
+</script>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAc74O5Z2PVfxjPpuoqktAT5wGuiIs-qQ&callback=initMap">
+</script>
+
+<style>
+    #map {
+        height: 500px;
+        width: 100%;
+    }
+    #placeName {
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: white;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="linkholder">
+    <div class="mapholder">
+        <div id="map"></div>
+    </div>
+</div>
+
+<!-- Add Place Form -->
+<form method="post">
+    {% csrf_token %}
+    <label for="id_name">Name:</label>
+    <input type="text" id="id_name" name="name" required>
+    <input type="hidden" id="id_lat" name="lat">
+    <input type="hidden" id="id_long" name="long">
+    <button type="submit">Submit Place</button>
+</form>
+
+<!-- Display Place Name -->
+<div id="placeName"></div>
+
+{% endblock %}
