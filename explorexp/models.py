@@ -8,6 +8,7 @@ from django.utils.text import slugify
 class Place(models.Model):
     long = models.DecimalField(max_digits=20, decimal_places=16)
     lat = models.DecimalField(max_digits=20, decimal_places=16)
+    type = models.CharField(max_length=200)
     name = models.CharField(max_length=100)
     name_slug = models.SlugField(unique=True)
 
