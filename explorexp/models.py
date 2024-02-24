@@ -11,7 +11,6 @@ class Place(models.Model):
     name = models.CharField(max_length=100)
     name_slug = models.SlugField(unique=True)
 
-
     def __str__(self):
         return self.name
 
@@ -29,7 +28,22 @@ class Challenge(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.CharField(max_length=500)
     place = models.ForeignKey(Place, related_name='challenges', on_delete=models.CASCADE)
+    points = models.IntegerField(default=0)
+
 
 class Post(models.Model):
     place = models.ForeignKey(Place, related_name='posts', on_delete=models.CASCADE)
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
+class User(models.Model):
+    user = models.OneToOneField(User, related_name='user', on_delete=models.CASCADE)
+    challenges_completed = models.ManyToManyField(Challenge, related_name='challenges_completed', blank=True)
+>>>>>>> profile

@@ -1,11 +1,12 @@
 # homepage/views.py
-
+from django.http import HttpResponse
 from django.shortcuts import render
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.views import generic, View
-from .models import Category
+from .models import Category, User
+from django.contrib.auth.models import User
 
 def home(request):
     return render(request, 'home.html')
@@ -14,9 +15,10 @@ def home(request):
 def map(request):
     key = request.session.get("API_KEY")
     context = {
-        'key':key,
+        'key': key,
     }
     return render(request, 'map.html', context)
+
 
 def index(request):
     return render(request, 'index.html')
@@ -25,6 +27,8 @@ def index(request):
 def logout_view(request):
     logout(request)
     return redirect('index')
+
+
 class CategoriesView(generic.ListView):
     template_name = "categories.html"
     context_object_name = "categories"
@@ -34,3 +38,16 @@ class CategoriesView(generic.ListView):
         Return the list of categories.
         """
         return Category.objects.all()
+
+
+def view_profile(request, username):
+    try:
+        find_user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return HttpResponse(f"404 User {username} does not exist")
+
+    context = {
+        "USER": find_user,
+        "CHALLENGES": find_user.user.challenges_completed.all()
+    }
+    return render(request, "profile.html", context=context)
