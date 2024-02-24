@@ -43,11 +43,12 @@ class CategoriesView(generic.ListView):
 def get_locations(request):
     selected_category = request.GET.get('category', '')
 
+    # Fetch data from the Place model based on the selected category
     places = Place.objects.filter(type=selected_category).values('name', 'lat', 'long')
-    print("Places:", places)
 
-    response_data = {'locations': list(places)}
-    print("Response Data:", response_data)
+    # Convert the queryset to a list and prepare the response
+    locations = list(places)
+    response_data = {'locations': locations}
 
     return JsonResponse(response_data)
 

@@ -10,6 +10,10 @@
 
 
 {% block content %}
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAc74O5Z2PVfxjPpuoqktAT5wGuiIs-qQ&callback=initMap">
+    </script>
+
   <style>
     body {
       font-family: 'Times New Roman', serif;
@@ -44,18 +48,48 @@
   <button class="filterButton category-link" data-location-type="Café">Cafés</button>
   <button class="filterButton category-link" data-location-type="Libraries">Libraries</button>
   <button class="filterButton category-link" data-location-type="Museums">Museums</button>
-  <button class="filterButton category-link" data-location-type="Gyms">Gyms</button>
+  <button class="filterButton category-link" data-location-type="gym">Gyms</button>
   <button class="filterButton category-link" data-location-type="Parks">Parks</button>
   <button class="filterButton category-link" data-location-type="Arcades">Arcades</button>
   <button class="filterButton category-link" data-location-type="Restaurants">Restaurants</button>
   <button class="filterButton category-link" data-location-type="Night Life">Night Life</button>
+
 <script>
-    function initMap(data) {
-        // Define your Google Maps initialization logic here
-        var mapOptions = {
-            center: {lat: 38.0336, lng: -78.5080},
-            zoom: 15,
-            styles: [
+document.querySelectorAll('.category-link').forEach(function(button) {
+    button.addEventListener('click', function() {
+        var selectedCategory = this.dataset.locationType;
+
+        // Make an AJAX request to the backend to get locations for the selected category
+        fetch(`/get_locations/?category=${selectedCategory}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.locations && data.locations.length > 0) {
+                    console.log(`Locations for ${selectedCategory}:`, data.locations);
+                    initMap(data.locations);  // Initialize the map with fetched data
+                } else {
+                    console.error(`No locations data available for ${selectedCategory}.`);
+                }
+            })
+            .catch(error => console.error(`Error fetching locations for ${selectedCategory}:`, error));
+    });
+});
+
+var markers = [];
+
+function initMap(locations) {
+    // Clear existing markers
+    markers.forEach(marker => marker.setMap(null));
+    markers = [];
+
+    var mapOptions = {
+        center: { lat: 38.0336, lng: -78.5080 },
+        zoom: 15,
+        styles: [
             {
                 featureType: 'poi',
                 stylers: [
@@ -63,16 +97,35 @@
                 ]
             }
         ]
-        };
-        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    };
 
+    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
+    if (locations && locations.length > 0) {
+        locations.forEach(function(location) {
+            var marker = new google.maps.Marker({
+                position: { lat: parseFloat(location.lat), lng: parseFloat(location.long) },
+                map: map,
+                title: location.name
+            });
+
+            markers.push(marker);
+
+            var infoWindow = new google.maps.InfoWindow({
+                content: `<h3>${location.name}</h3>`
+            });
+
+            marker.addListener('click', function() {
+                infoWindow.open(map, marker);
+            });
+        });
+    } else {
+        console.error('No locations data available.');
     }
+}
 </script>
 
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAc74O5Z2PVfxjPpuoqktAT5wGuiIs-qQ&callback=initMap">
-    </script>
+
 
     <style>
         #map {
