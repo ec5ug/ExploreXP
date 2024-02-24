@@ -3,7 +3,9 @@
 from django.shortcuts import render, redirect
 from .forms import PlaceForm
 from django.views import generic, View
-from .models import Category
+from .models import Category, Place
+from django.http import JsonResponse
+from django.template.defaultfilters import slugify
 
 
 def home(request):
@@ -37,4 +39,16 @@ class CategoriesView(generic.ListView):
         Return the list of categories.
         """
         return Category.objects.all()
+
+def get_locations(request):
+    selected_category = request.GET.get('category', '')
+
+    # Fetch data from the Place model based on the selected category
+    places = Place.objects.filter(type=selected_category).values('name', 'lat', 'long')
+
+    # Convert the queryset to a list and prepare the response
+    locations = list(places)
+    response_data = {'locations': locations}
+
+    return JsonResponse(response_data)
 
