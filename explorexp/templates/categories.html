@@ -69,6 +69,7 @@
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
     }
 </script>
+
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAc74O5Z2PVfxjPpuoqktAT5wGuiIs-qQ&callback=initMap">
     </script>
@@ -87,5 +88,20 @@
         </div>
     </div>
 
+<script>
+// Attach click event to all elements with the 'category-link' class
+document.querySelectorAll('.category-link').forEach(function(button) {
+    button.addEventListener('click', function() {
+        console.log("Button Clicked:", this.dataset.locationType);
+        localStorage.setItem('selectedLocationType', this.dataset.locationType);
+        window.location.href = '/categories/';
+    });
+});
+</script>
+
 {% endblock %}
+
 </body>
+
+
+
