@@ -43,6 +43,7 @@ class CategoriesView(generic.ListView):
 
 def view_profile(request, username):
     user_found = User.objects.get(username=username)
+    #user_profile, created = UserProfile.objects.get_or_create(user=username)
     context = {
         "USER_PROFILE": user_found,
         #"CHALLENGES": profile.challenges_completed.all()
