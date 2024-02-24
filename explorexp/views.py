@@ -43,9 +43,11 @@ class CategoriesView(generic.ListView):
 def get_locations(request):
     selected_category = request.GET.get('category', '')
 
-    # Perform a query to retrieve locations based on the selected category
-    # Replace this with your actual model and filtering logic
-    places = Place.objects.filter(category=selected_category).values('name', 'lat', 'long')
+    places = Place.objects.filter(type=selected_category).values('name', 'lat', 'long')
+    print("Places:", places)
 
-    return JsonResponse({'locations': list(places)})
+    response_data = {'locations': list(places)}
+    print("Response Data:", response_data)
+
+    return JsonResponse(response_data)
 
