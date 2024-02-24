@@ -144,14 +144,23 @@ function displayPlaceName(location) {
     <input type="hidden" id="id_lat" name="lat">
     <input type="hidden" id="id_long" name="long">
     <button type="submit">Submit Place</button>
+        </select>
 </form>
 
+
     <script>
+
+function capitalizeEachWord(str) {
+    return str.replace(/\b\w/g, function (match) {
+        return match.toUpperCase();
+    });
+}
+
     var select = document.getElementById("id_type");
     placeTypes.forEach(function(type) {
         var option = document.createElement("option");
         option.setAttribute("value", type);
-        option.textContent = type.replace(/_/g, " "); // Replace underscores with spaces
+        option.textContent = capitalizeEachWord(type.replace(/_/g, " ")); // Capitalize each word and replac
         select.appendChild(option);
     });
 </script>
