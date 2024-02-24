@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 from django.contrib.auth.views import LogoutView
 from . import views
+from .views import get_locations
 
 urlpatterns = [
     path('map/', views.map, name="map"),
@@ -28,5 +29,8 @@ urlpatterns = [
     path('logout/', views.logout_view),
     path('home', views.home, name="home"),
     path('categories/', views.CategoriesView.as_view(), name='categories'),
-    path('profile/<str:username>/', views.view_profile, name='view_profile')
+    path('profile/<str:username>/', views.view_profile, name='view_profile'),
+    path('add_place/', views.add_place, name="add_place"),
+    path('categories/', views.CategoriesView.as_view(), name='categories'),
+    path('get_locations/', get_locations, name='get_locations'),
 ]

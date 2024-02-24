@@ -1,12 +1,18 @@
 # homepage/views.py
+
 from django.http import HttpResponse
 from django.shortcuts import render
-
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.views import generic, View
 from .models import Category, UserProfile
 from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
+from .forms import PlaceForm
+from django.views import generic, View
+from .models import Category, Place
+from django.http import JsonResponse
+from django.template.defaultfilters import slugify
 
 
 def home(request):
@@ -29,6 +35,15 @@ def logout_view(request):
     logout(request)
     return redirect('index')
 
+def add_place(request):
+    if request.method == 'POST':
+        form = PlaceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')  # Redirect to a success page
+    else:
+        form = PlaceForm()
+    return render(request, 'add_place.html', {'form': form})
 
 class CategoriesView(generic.ListView):
     template_name = "categories.html"
@@ -49,3 +64,16 @@ def view_profile(request, username):
         #"CHALLENGES": profile.challenges_completed.all()
     }
     return render(request, 'profile.html', context=context)
+
+def get_locations(request):
+    selected_category = request.GET.get('category', '')
+
+    # Fetch data from the Place model based on the selected category
+    places = Place.objects.filter(type=selected_category).values('name', 'lat', 'long')
+
+    # Convert the queryset to a list and prepare the response
+    locations = list(places)
+    response_data = {'locations': locations}
+
+    return JsonResponse(response_data)
+

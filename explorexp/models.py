@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 class Place(models.Model):
     long = models.DecimalField(max_digits=20, decimal_places=16)
     lat = models.DecimalField(max_digits=20, decimal_places=16)
+    type = models.CharField(max_length=200)
     name = models.CharField(max_length=100)
     name_slug = models.SlugField(unique=True)
 
