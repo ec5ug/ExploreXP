@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 
 
 class Place(models.Model):
@@ -38,6 +39,9 @@ class Category(models.Model):
         return self.name
 
 
-class User(models.Model):
-    user = models.OneToOneField(User, related_name='user', on_delete=models.CASCADE)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     challenges_completed = models.ManyToManyField(Challenge, related_name='challenges_completed', blank=True)
+
+    def __str__(self):
+        return self.user.username
