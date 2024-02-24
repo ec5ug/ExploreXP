@@ -1,0 +1,25 @@
+
+{% extends 'mapBase.html' %}
+{% load static %}
+{% block content %}
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAc74O5Z2PVfxjPpuoqktAT5wGuiIs-qQ&callback=initMap">
+    </script>
+    <style>
+        #map {
+            height: 700px;
+            width: 100%;
+        }
+
+         </style>
+
+    <div class="linkholder">
+        <div class="mapholder">
+            <div id="map"></div>
+        </div>
+    </div>
+
+
+<p>Testing for the map page </p>
+{% endblock %}
