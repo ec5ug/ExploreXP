@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.views import generic, View
 from .models import Category, User
-
+from django.contrib.auth.models import User
 
 def home(request):
     return render(request, 'home.html')
@@ -41,15 +41,13 @@ class CategoriesView(generic.ListView):
 
 
 def view_profile(request, username):
-    user = User.objects.filter(username=username)
-    if len(user) == 0:
+    try:
+        find_user = User.objects.get(username=username)
+    except User.DoesNotExist:
         return HttpResponse(f"404 User {username} does not exist")
 
-    user = user[0]
-
     context = {
-        "USER": user,
-        "CHALLENGES": user.challenges_completed.all()
+        "USER": find_user,
+        "CHALLENGES": find_user.user.challenges_completed.all()
     }
-
-    return render(request, "projectApp/profile.html", context=context)
+    return render(request, "profile.html", context=context)
