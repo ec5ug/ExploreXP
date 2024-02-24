@@ -1,0 +1,107 @@
+
+{% extends 'mapBase.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+
+
+</head>
+<body>
+
+
+{% block content %}
+  <style>
+    body {
+      font-family: 'Times New Roman', serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding:0;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .category-link {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #f46e1e;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .category-link:hover {
+      background-color: ##f46e1e;
+    }
+ </style>
+<h1>Welcome to categories!</h1>
+  <button class="filterButton category-link" data-location-type="Study Spaces">Study Spaces</button>
+  <button class="filterButton category-link" data-location-type="Lounges">Lounges</button>
+  <button class="filterButton category-link" data-location-type="Café">Cafés</button>
+  <button class="filterButton category-link" data-location-type="Libraries">Libraries</button>
+  <button class="filterButton category-link" data-location-type="Museums">Museums</button>
+  <button class="filterButton category-link" data-location-type="Gyms">Gyms</button>
+  <button class="filterButton category-link" data-location-type="Gyms">Parks</button>
+  <button class="filterButton category-link" data-location-type="Arcades">Arcades</button>
+  <button class="filterButton category-link" data-location-type="Restaurants">Restaurants</button>
+  <button class="filterButton category-link" data-location-type="Night Life">Night Life</button>
+<script>
+    function initMap() {
+        // Define your Google Maps initialization logic here
+        var mapOptions = {
+            center: {lat: 38.0336, lng: -78.5080},
+            zoom: 15,
+            styles: [
+            {
+                featureType: 'poi',
+                stylers: [
+                    { visibility: 'off' }
+                ]
+            }
+        ]
+        };
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    }
+</script>
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAc74O5Z2PVfxjPpuoqktAT5wGuiIs-qQ&callback=initMap">
+    </script>
+
+    <style>
+        #map {
+            height: 80%;
+            width: 50%;
+        }
+
+         </style>
+
+    <div class="linkholder">
+        <div class="mapholder">
+            <div id="map"></div>
+        </div>
+    </div>
+
+<script>
+// Attach click event to all elements with the 'category-link' class
+document.querySelectorAll('.category-link').forEach(function(button) {
+    button.addEventListener('click', function() {
+        console.log("Button Clicked:", this.dataset.locationType);
+        localStorage.setItem('selectedLocationType', this.dataset.locationType);
+        window.location.href = '/categories/';
+    });
+});
+</script>
+
+{% endblock %}
+
+</body>
+
+
+

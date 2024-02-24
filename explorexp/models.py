@@ -29,3 +29,8 @@ class Challenge(models.Model):
 class Post(models.Model):
     place = models.ForeignKey(Place, related_name='posts', on_delete=models.CASCADE)
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
+
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+    def __str__(self):
+        return self.name
