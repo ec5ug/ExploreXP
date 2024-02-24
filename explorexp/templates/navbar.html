@@ -67,6 +67,10 @@
         height: 70px;
     }
 
+    .nav {
+        display:flex
+    }
+
     .navdesign {
         display: block;
         color: white;
@@ -84,20 +88,18 @@
     }
 </style>
 <title>ExploreXP</title>
-<nav>
+<nav class = "nav">
     <a class="active navleft navdesign" href="{% url 'index' %}"><span class="brsmall"></span>Home</a>
     <a class="navleft navdesign" href="{% url 'add_place' %}"><span class="brsmall"></span>Add Challenges</a>
     <a class="navleft navdesign" href="{% url 'categories' %}"><span class="brsmall"></span>Leaderboard</a>
 
-    <form id="logoutform" method="POST" action="/logout/" style="float:right;">
-        {% csrf_token %}
-        <button type="submit" class="navdesign navleft" id="logout">
-            <img style="font-size: 12px; margin-top: 2px" src="../../../static/images/logout.png" width ="50" height="50" alt="Logout">
-        </button>
-    </form>
+    <a style = "float:right" class = "navdesign navleft" href="{% url 'logout' %}">
+        <img style="font-size: 12px; margin-top: 2px" src="../../../static/images/logout.png" width ="50" height="50" alt="Logout">
+    </a>
 
     <a style = "float:right" class = "navdesign navleft" href="{% url 'view_profile' request.user.username %}">
         <img style="font-size: 12px; margin-top: 2px" src="../../../static/images/profile.png" width ="50" height="50" alt="Profile">
     </a>
 
    </nav>
+<br>

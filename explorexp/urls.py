@@ -26,7 +26,7 @@ urlpatterns = [
     path('app/', include('allauth.urls')),
     path('', TemplateView.as_view(template_name='index.html'), name="index"),
     path('accounts/', include('allauth.urls')),
-    path('logout/', views.logout_view),
+    path('logout/', views.logout_view, name='logout'),
     path('home', views.home, name="home"),
     path('categories/', views.CategoriesView.as_view(), name='categories'),
     path('profile/<str:username>/', views.view_profile, name='view_profile'),
