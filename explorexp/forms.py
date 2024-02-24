@@ -1,7 +1,7 @@
 from django import forms
 from .models import Place
 
-class PlaceForm(forms.Form):
+class PlaceForm(forms.ModelForm):
     class Meta:
         model = Place
-        fields = ['long', 'lat', 'name']
+        fields = ['long', 'lat', 'name', 'type']
