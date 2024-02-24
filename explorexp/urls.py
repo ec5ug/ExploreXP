@@ -27,5 +27,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('logout/', views.logout_view),
     path('home', views.home, name="home"),
-    path('categories/', views.CategoriesView.as_view(), name='categories')
+    path('categories/', views.CategoriesView.as_view(), name='categories'),
+    path('profile/<str:username>', views.view_profile, name='view_profile')
 ]
