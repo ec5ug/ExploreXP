@@ -5,6 +5,19 @@
     <title>Profile</title>
 </head>
 <body>
+    <h1>Welcome {{ USER_PROFILE }}</h1>
+    <h2>Challenges Completed:</h2>
+    <ul>
+        {% for challenge in CHALLENGES_COMPLETED %}
+            <li>{{ challenge.name }} - {{ challenge.description }}</li>
+        {% endfor %}
+    </ul>
+<h2>Total Points Completed: {{ total_points_completed }}</h2>
+<ul>
+        {% for post in USER_POSTS %}
+            <li>{{ post.date }} - {{ post.place}} - {{ post.challenge }} - {{ post.comment }}</li>
+        {% endfor %}
+    </ul>
 
 </body>
 </html>

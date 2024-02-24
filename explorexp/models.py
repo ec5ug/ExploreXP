@@ -26,10 +26,12 @@ class Challenge(models.Model):
     place = models.ForeignKey(Place, related_name='challenges', on_delete=models.CASCADE)
     points = models.IntegerField(default=0)
 
-
 class Post(models.Model):
-    place = models.ForeignKey(Place, related_name='posts', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE)
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
+    comment = models.CharField(max_length=500)
+    date = models.DateField()
 
 
 class Category(models.Model):
