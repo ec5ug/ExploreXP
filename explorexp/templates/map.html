@@ -6,7 +6,15 @@
         // Define your Google Maps initialization logic here
         var mapOptions = {
             center: {lat: 38.0336, lng: -78.5080},
-            zoom: 15
+            zoom: 15,
+            styles: [
+            {
+                featureType: 'poi',
+                stylers: [
+                    { visibility: 'off' }
+                ]
+            }
+        ]
         };
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
     }
@@ -29,6 +37,4 @@
         </div>
     </div>
 
-
-<p>Testing for the map page </p>
 {% endblock %}
