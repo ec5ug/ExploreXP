@@ -46,4 +46,3 @@ class Category(models.Model):
 class User(models.Model):
     user = models.OneToOneField(User, related_name='user', on_delete=models.CASCADE)
     challenges_completed = models.ManyToManyField(Challenge, related_name='challenges_completed', blank=True)
->>>>>>> profile
