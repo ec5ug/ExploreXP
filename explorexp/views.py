@@ -15,9 +15,10 @@ def home(request):
 def map(request):
     key = request.session.get("API_KEY")
     context = {
-        'key':key,
+        'key': key,
     }
     return render(request, 'map.html', context)
+
 
 def index(request):
     return render(request, 'index.html')
@@ -26,6 +27,7 @@ def index(request):
 def logout_view(request):
     logout(request)
     return redirect('index')
+
 
 class CategoriesView(generic.ListView):
     template_name = "categories.html"
@@ -36,6 +38,7 @@ class CategoriesView(generic.ListView):
         Return the list of categories.
         """
         return Category.objects.all()
+
 
 def view_profile(request, username):
     user = User.objects.filter(username=username)
