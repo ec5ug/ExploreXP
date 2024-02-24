@@ -4,13 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ExploreXP Home</title>
 </head>
 <body>
     {% if user.is_authenticated %}
     {% include 'navbar.html' %}
-    <p>Welcome. You are logged in as {{user.username}} </p>
-    <a href="{% url 'view_profile' username=request.user.username %}">Go to Profile</a>
     {% include 'categories.html' %}
     {% else %}
         <a href="{% provider_login_url 'google' %}">Login with Google</a>

@@ -40,7 +40,7 @@ def add_place(request):
         form = PlaceForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')  # Redirect to a success page
+            return redirect('')  # Redirect to a success page
     else:
         form = PlaceForm()
     return render(request, 'add_place.html', {'form': form})
