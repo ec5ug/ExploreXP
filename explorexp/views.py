@@ -1,6 +1,6 @@
 # homepage/views.py
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import PlaceForm
 from django.views import generic, View
 from .models import Category
@@ -23,7 +23,7 @@ def add_place(request):
         form = PlaceForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('success_url')  # Redirect to a success page
+            return redirect('home')  # Redirect to a success page
     else:
         form = PlaceForm()
     return render(request, 'add_place.html', {'form': form})
