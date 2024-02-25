@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 from django.contrib.auth.views import LogoutView
 from . import views
-from .views import get_locations
+from .views import get_locations, PlacePageView
 
 urlpatterns = [
     path('map/', views.map, name="map"),
@@ -33,4 +33,5 @@ urlpatterns = [
     path('add_place/', views.add_place, name="add_place"),
     path('categories/', views.CategoriesView.as_view(), name='categories'),
     path('get_locations/', get_locations, name='get_locations'),
+    path('placePage/<str:name_slug>/', PlacePageView.as_view(), name='placePage'),
 ]

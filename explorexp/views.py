@@ -11,11 +11,14 @@ from django.views import generic, View
 from .models import Category, UserProfile, Post
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import DetailView
 from .forms import PlaceForm
 from django.views import generic, View
 from .models import Category, Place
 from django.http import JsonResponse
 from django.template.defaultfilters import slugify
+import re
 
 def home(request):
     return render(request, 'home.html')
@@ -47,6 +50,7 @@ def add_place(request):
         form = PlaceForm()
     return render(request, 'add_place.html', {'form': form})
 
+
 class CategoriesView(generic.ListView):
     template_name = "categories.html"
     context_object_name = "categories"
@@ -56,6 +60,7 @@ class CategoriesView(generic.ListView):
         Return the list of categories.
         """
         return Category.objects.all()
+
 
 def get_locations(request):
     selected_category = request.GET.get('category', '')
@@ -98,3 +103,13 @@ def get_locations(request):
     response_data = {'locations': locations}
 
     return JsonResponse(response_data)
+
+class PlacePageView(View):
+    template_name = 'placePage.html'
+
+    def get(self, request, name_slug):
+        name = re.sub('[^0-9a-zA-Z]+', '-', name_slug)
+        print(name)
+        place = get_object_or_404(Place, name_slug=name)
+        return render(request, self.template_name, {'place': place})
+
