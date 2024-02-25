@@ -58,7 +58,7 @@
             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnAyNjZqaDliODc3dHQyajU5NHNodnlwN3ptY2lrNHMzbWUxNHd0byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AtnhTmX2BfJMaJa73A/giphy.gif" alt="GIF">
         </div>
 
-        <a href="{% provider_login_url 'google' %}">
+        <a href="{% provider_login_url 'google' %}" method="post">
             <img class='login-button' src="../../../static/images/play_button.png" alt="Login with Google">
         </a>
     {% endif %}
