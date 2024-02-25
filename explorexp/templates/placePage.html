@@ -25,12 +25,36 @@
             font-size: larger;
         }
 
+        #show-many-comments {
+            overflow-y: auto; /* 80% of the viewport height */
+            overflow-x: auto; /* 50% of the viewport width */
+            display: inline-block;
+            vertical-align: top; /* Align to the top of the map */
+            border-radius: 20px;
+            background-color: rgba(198, 204, 213, 0.25);
+            padding: 5px;
+            margin: 5px;
+            font-size: smaller;
+        }
+
+        #for-comments {
+            overflow-y: auto; /* 80% of the viewport height */
+            overflow-x: hidden; /* 50% of the viewport width */
+            display: inline-block;
+            vertical-align: top; /* Align to the top of the map */
+            border-radius: 20px;
+            padding: 5px;
+            margin: 5px;
+            font-size: smaller;
+            max-height: 200px;
+        }
+
         #show-comments {
             display: inline-block;
             vertical-align: top; /* Align to the top of the map */
             padding: 60px;
             width: 40vw; /* Adjust the width of the list as needed */
-            height: 80vh; /* Add scroll if the list exceeds the height */
+            overflow-y: auto; /* Add scroll if the list exceeds the height */
             border-radius: 20px;
             background-color: rgba(63, 136, 197, 0.65);
             font-size: larger;
@@ -138,9 +162,15 @@
     <div class="text" style="border:solid" id="show-comments">
         <h1>Adventure Chronicles</h1>
         <ul>
-            {% for post in CHRONICLES %}
-                <li>{{ post.date }} - {{ post.user.username}} - {{ post.place}} - {{ post.challenge.name }} - {{ post.comment }}</li>
-            {% endfor %}
+            <div id="for-comments">
+                {% for post in CHRONICLES %}
+                <div class="text" style="border:solid" id="show-many-comments">
+                    <b>@{{ post.user.username }}</b>
+                    <b>{{ post.date }}: {{ post.challenge.name }}</b>
+                    <p>{{ post.comment }}</p>
+                </div>
+                {% endfor %}
+            </div>
         </ul>
         <form method="post">
     {% csrf_token %}
