@@ -1,11 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+{% include 'navbar.html' %}
+<style>
+    body {
+      font-family: 'Times New Roman', serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding:0;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+        #show-challenges {
+            height: 80vh; /* 80% of the viewport height */
+            width: 50vw; /* 50% of the viewport width */
+            display: inline-block;
+            vertical-align: top; /* Align to the top of the map */
+            border-radius: 20px;
+            background-color: #6493D8;
+            padding: 20px;
+        }
+
+        #show-comments {
+            display: inline-block;
+            vertical-align: top; /* Align to the top of the map */
+            padding: 20px;
+            width: 40vw; /* Adjust the width of the list as needed */
+            height: 80vh; /* Add scroll if the list exceeds the height */
+            border-radius: 20px;
+            background-color: #6493D8;
+        }
+
+        .category-link {
+        display: inline-block; /* Display buttons inline */
+        margin-right: 10px; /* Add margin to separate buttons */
+        padding: 10px 20px;
+        background-color: #f46e1e;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+        }
+
+        .category-link:hover {
+            background-color: #f46e1e;
+        }
+ </style>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-  <p>Welcome to the Place Page</p>
+    <title>{{PLACE_NAME}}</title>
+  <p></p>
+    <h1 align="center">{{PLACE_NAME}}</h1>
 </head>
 <body>
-
+    <div class="text" style="border:solid" id="show-challenges">
+        <h1>Challenges</h1>
+        <ul>
+            {% for challenge in CHALLENGES %}
+                <li>{{ challenge.name }} - {{ challenge.description }}</li>
+            {% endfor %}
+        </ul>
+        <form action="/url" method="POST">
+            <input type="text" name="first_name" placeholder="Add a challenge!" required>
+            <button type="submit">Submit</button>
+    </form>
+    </div>
+    <div class="text" style="border:solid" id="show-comments">
+        <h1>Adventure Chronicles</h1>
+        <ul>
+            {% for post in CHRONICLES %}
+                <li>{{ post.date }} - {{ post.user.username}} - {{ post.place}} - {{ post.challenge.name }} - {{ post.comment }}</li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
