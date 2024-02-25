@@ -153,12 +153,14 @@ def view_place(request):
         else:
             print("RESPONSE", request.POST)
             p_obj = Place.objects.filter(name=request.POST['place'])[0]
-            c_obj = Category.objects.filter(name=request.POST['category'])
+            c_obj, created = Category.objects.get_or_create(name=request.POST['category'])
             alt_response = request.POST.copy()
             alt_response['place'] = p_obj
             alt_response['category'] = c_obj
+            print("NEW RESPONSE", alt_response)
             form = ChallengeForm(alt_response)
             if form.is_valid():
+                print("FORM IS VALID YAY")
                 form.save()
         location_name = request.POST['place']
     else:
