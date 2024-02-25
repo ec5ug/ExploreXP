@@ -1,0 +1,168 @@
+git{% extends 'mapBase.html' %}
+{% load static %}
+{% block content %}
+{% include 'navbar.html' %}
+<head>
+    <title>Add Place</title>
+</head>
+<script>
+    var map;
+    var marker;
+
+    function initMap() {
+        // Define your Google Maps initialization logic here
+        var mapOptions = {
+            center: {lat: 38.0336, lng: -78.5080},
+            zoom: 15
+        };
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        // Add click event listener to the map
+        map.addListener('click', function(event) {
+            placeMarker(event.latLng);
+            displayPlaceName(event.latLng);
+        });
+    }
+
+    // Function to place marker on the map
+    function placeMarker(location) {
+        // Remove existing marker if it exists
+        if (marker) {
+            marker.setMap(null);
+        }
+
+        marker = new google.maps.Marker({
+            position: location,
+            map: map
+        });
+
+        // Update form fields with latitude and longitude values
+        document.getElementById('id_lat').value = location.lat();
+        document.getElementById('id_long').value = location.lng();
+    }
+
+var placeTypes = [
+    "airport", "amusement_park", "aquarium", "art_gallery",
+     "bakery", "bank", "bar", "beauty_salon", "bicycle_store",
+    "book_store", "bowling_alley", "bus_station", "cafe", "campground",
+     "church", "city_hall", "clothing_store", "convenience_store",
+    "courthouse",  "department_store",
+     "gym",
+     "hindu_temple",
+     "library",
+     "mosque",
+    "movie_theater",  "museum", "night_club",
+    "park", "parking", "pet_store",
+     "primary_school",
+    "restaurant", "rv_park", "school", "secondary_school",
+     "shopping_mall", "spa", "stadium", "store",
+     "supermarket", "synagogue", "tourist_attraction",
+    "train_station", "transit_station", "university",
+    "zoo"
+];
+
+function displayPlaceName(location) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'location': location }, function(results, status) {
+        if (status === 'OK') {
+            if (results[0]) {
+                // Check if the result has a specific establishment name
+                var placeName = results[0].short_name;
+                var type_list = results[0].types;
+                var place_type;
+
+                for (var i = 0; i < type_list.length; i++) {
+                    if (placeTypes.includes(type_list[i])) {
+                        place_type = type_list[i];
+                        break;
+                    }
+
+                }
+
+                if (placeName) {
+                    // If a specific establishment name is found, display it
+                    document.getElementById('id_name').value = placeName;
+                } else {
+                    // If no specific establishment name is found, use the formatted address
+                    var formattedAddress = results[0].formatted_address;
+                    document.getElementById('id_name').value = formattedAddress;
+                }
+
+                if (place_type) {
+                    document.getElementById('id_type').value = place_type;
+                } else {
+                    var place_type = 'general';
+                    document.getElementById('id_type').value = place_type;
+                }
+            } else {
+                document.getElementById('id_name').value = 'No place found';
+            }
+        } else {
+            document.getElementById('id_name').value = 'Geocoder failed due to: ' + status;
+        }
+    });
+}
+
+
+</script>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAc74O5Z2PVfxjPpuoqktAT5wGuiIs-qQ&callback=initMap">
+</script>
+
+<style>
+    #map {
+        height: 500px;
+        width: 100%;
+    }
+    #placeName {
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: white;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="linkholder">
+    <div class="mapholder">
+        <div id="map"></div>
+    </div>
+</div>
+
+<!-- Add Place Form -->
+<form method="post">
+    {% csrf_token %}
+    <label for="id_name">Name:</label>
+    <input type="text" id="id_name" name="name" required>
+    <label for="id_type">Type:</label>
+    <select id="id_type" name="type" required>
+        <option value="" disabled selected>Select a type</option>
+    <input type="hidden" id="id_lat" name="lat">
+    <input type="hidden" id="id_long" name="long">
+    <button type="submit">Submit Place</button>
+        </select>
+</form>
+
+
+    <script>
+
+function capitalizeEachWord(str) {
+    return str.replace(/\b\w/g, function (match) {
+        return match.toUpperCase();
+    });
+}
+
+    var select = document.getElementById("id_type");
+    placeTypes.forEach(function(type) {
+        var option = document.createElement("option");
+        option.setAttribute("value", type);
+        option.textContent = capitalizeEachWord(type.replace(/_/g, " ")); // Capitalize each word and replac
+        select.appendChild(option);
+    });
+</script>
+
+{% endblock %}

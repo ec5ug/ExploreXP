@@ -1,0 +1,241 @@
+
+{% extends 'mapBase.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+</head>
+<body>
+
+
+{% block content %}
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAc74O5Z2PVfxjPpuoqktAT5wGuiIs-qQ&callback=initMap">
+    </script>
+
+  <style>
+    body {
+      font-family: 'Times New Roman', serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding:0;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .category-link {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #f46e1e;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .category-link:hover {
+      background-color: #f46e1e;
+    }
+ </style>
+
+<script>
+    var placeTypes = [
+    "airport", "amusement_park", "aquarium", "art_gallery",
+     "bakery", "bank", "bar", "beauty_salon", "bicycle_store",
+    "book_store", "bowling_alley", "bus_station", "cafe", "campground",
+     "church", "city_hall", "clothing_store", "convenience_store",
+    "courthouse",  "department_store",
+     "gym",
+     "hindu_temple",
+     "library",
+     "mosque",
+    "movie_theater",  "museum", "night_club",
+    "park", "parking", "pet_store",
+     "primary_school",
+    "restaurant", "rv_park", "school", "secondary_school",
+     "shopping_mall", "spa", "stadium", "store",
+     "supermarket", "synagogue", "tourist_attraction",
+    "train_station", "transit_station", "university",
+    "zoo"
+];
+
+</script>
+
+<h1>Welcome, {{user.username}}!</h1>
+
+  <button class="filterButton category-link" data-location-type="university">Study Spaces</button>
+  <button class="filterButton category-link" data-location-type="cafe">Cafés</button>
+  <button class="filterButton category-link" data-location-type="library">Libraries</button>
+  <button class="filterButton category-link" data-location-type="tourist_attraction">Attractions</button>
+  <button class="filterButton category-link" data-location-type="museum">Museums</button>
+  <button class="filterButton category-link" data-location-type="gym">Gyms</button>
+  <button class="filterButton category-link" data-location-type="park">Parks</button>
+  <button class="filterButton category-link" data-location-type="shopping_mall">Mall</button>
+  <button class="filterButton category-link" data-location-type="restaurant">Restaurants</button>
+  <button class="filterButton category-link" data-location-type="bar">Night Life</button>
+
+  <form id="categoryForm" method="post">
+        {% csrf_token %}
+        <label for="id_type">Or Select a Category:</label>
+        <select id="id_type" name="type" required>
+            <option value="" disabled selected>Select a Category</option>
+        </select>
+        <button type="button" onclick="submitForm()">Submit Place</button>
+  </form>
+
+<script>
+function capitalizeEachWord(str) {
+    return str.replace(/\b\w/g, function (match) {
+        return match.toUpperCase();
+    });
+}
+   var select = document.getElementById("id_type");
+    placeTypes.forEach(function(type) {
+        var option = document.createElement("option");
+        option.setAttribute("value", type);
+        option.textContent = capitalizeEachWord(type.replace(/_/g, " ")); // Capitalize each word and replace underscores with spaces
+        select.appendChild(option);
+    });
+
+        function submitForm() {
+            var selectedCategory = document.getElementById("id_type").value;
+
+            // Make an AJAX request to the backend to get locations for the selected category
+            fetch(`/get_locations/?category=${selectedCategory}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.locations && data.locations.length > 0) {
+                        console.log(`Locations for ${selectedCategory}:`, data.locations);
+                        initMap(data.locations);  // Initialize the map with fetched data
+                    } else {
+                        console.error(`No locations data available for ${selectedCategory}.`);
+                    }
+                })
+                .catch(error => console.error(`Error fetching locations for ${selectedCategory}:`, error));
+        }
+
+
+
+document.querySelectorAll('.category-link').forEach(function(button) {
+    button.addEventListener('click', function() {
+        var selectedCategory = this.dataset.locationType;
+
+        // Make an AJAX request to the backend to get locations for the selected category
+        fetch(`/get_locations/?category=${selectedCategory}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.locations && data.locations.length > 0) {
+                    console.log(`Locations for ${selectedCategory}:`, data.locations);
+                    initMap(data.locations);  // Initialize the map with fetched data
+                } else {
+                    console.error(`No locations data available for ${selectedCategory}.`);
+                }
+            })
+            .catch(error => console.error(`Error fetching locations for ${selectedCategory}:`, error));
+    });
+});
+
+var markers = [];
+
+function initMap(locations) {
+    // Clear existing markers
+    markers.forEach(marker => marker.setMap(null));
+    markers = [];
+
+    var mapOptions = {
+        center: { lat: 38.0336, lng: -78.5080 },
+        zoom: 15,
+        styles: [
+            {
+                featureType: 'poi',
+                stylers: [
+                    { visibility: 'off' }
+                ]
+            }
+        ]
+    };
+
+    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+    if (locations && locations.length > 0) {
+        locations.forEach(function(location) {
+            var marker = new google.maps.Marker({
+                position: { lat: parseFloat(location.lat), lng: parseFloat(location.long) },
+                map: map,
+                title: location.name
+            });
+
+            markers.push(marker);
+
+            var infoWindow = new google.maps.InfoWindow({
+                content: `<h3>${location.name}</h3>`
+            });
+
+            marker.addListener('click', function() {
+                infoWindow.open(map, marker);
+            });
+        });
+    } else {
+        console.error('No locations data available.');
+    }
+}
+</script>
+
+
+
+    <style>
+        #map {
+            height: 80%;
+            width: 50%;
+        }
+
+         </style>
+
+    <div class="linkholder">
+        <div class="mapholder">
+            <div id="map"></div>
+        </div>
+    </div>
+
+<script>
+// Attach click event to all elements with the 'category-link' class
+document.querySelectorAll('.category-link').forEach(function(button) {
+    button.addEventListener('click', function() {
+        var selectedCategories = this.dataset.locationType.split(' ');
+
+        selectedCategories.forEach(function(category) {
+            fetch(`/get_locations/?category=${category}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(`Locations for ${category}:`, data.locations);
+                })
+                .catch(error => console.error(`Error fetching locations for ${category}:`, error));
+        });
+    });
+});
+
+var markers = [];
+</script>
+
+
+{% endblock %}
+
+</body>
+
+
+
