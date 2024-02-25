@@ -45,10 +45,6 @@
         }
 
 
-
-    .category-link:hover {
-      background-color: #f46e1e;
-    }
 .category-link {
   appearance: none;
   background-color: transparent;
@@ -195,7 +191,7 @@ function capitalizeEachWord(str) {
         var formattedCategory = formatCategoryName(selectedCategory);
 
         // Update the selected category display
-        document.getElementById("selectedCategory").textContent = formattedCategory;
+        //document.getElementById("selectedCategory").textContent = formattedCategory;
 
             // Make an AJAX request to the backend to get locations for the selected category
             fetch(`/get_locations/?category=${selectedCategory}`)
@@ -226,7 +222,8 @@ function capitalizeEachWord(str) {
 
                     } else {
                         console.error(`No locations data available for ${selectedCategory}.`);
-                        document.getElementById("category-list").innerHTML = '<p>There are no locations that belong to this category yet. How about try adding some?</p>';
+                        document.getElementById("category-list").innerHTML = '<p style="font-size: 30px;">There are no locations that belong to this category yet. How about you <a href="/add_place/" >try adding some</a>?</p>';
+
                     }
                 })
                 .catch(error => console.error(`Error fetching locations for ${selectedCategory}:`, error));
@@ -239,8 +236,10 @@ document.querySelectorAll('.category-link').forEach(function(button) {
         var selectedCategory = this.dataset.locationType;
         var formattedCategory = formatCategoryName(selectedCategory);
 
+
+
         // Update the selected category display
-        document.getElementById("selectedCategory").textContent = formattedCategory;
+        //document.getElementById("selectedCategory").textContent = formattedCategory;
 
         // Make an AJAX request to the backend to get locations for the selected category
         fetch(`/get_locations/?category=${selectedCategory}`)
@@ -254,6 +253,22 @@ document.querySelectorAll('.category-link').forEach(function(button) {
                 if (data.locations && data.locations.length > 0) {
                     console.log(`Locations for ${selectedCategory}:`, data.locations);
                     initMap(data.locations);  // Initialize the map with fetched data
+
+                    var categoryList = document.getElementById("category-list");
+                        categoryList.innerHTML = '';
+
+                        var categoryHeading = document.createElement("h2");
+                        categoryHeading.textContent = `${formattedCategory}:`;
+                        categoryList.appendChild(categoryHeading);
+
+                data.locations.forEach(function(place) {
+                     if (place.name) {
+                     var placeItem = document.createElement("p");
+                     placeItem.style.fontSize = "30px";
+                     placeItem.textContent = place.name;
+                     categoryList.appendChild(placeItem);
+                      }
+                });
                 } else {
                     console.error(`No locations data available for ${selectedCategory}.`);
                 }
@@ -297,7 +312,7 @@ function initMap(locations) {
 
             const infoWindow = new google.maps.InfoWindow({
                 content: `<div><strong><center>${location.name}</center></strong>` +
-                    `<center><a href="/placePage/?name_slug=${location.name}">View Page</a></center></div>`
+                    `<center><a href="/placePage/?name_slug=${location.name}">View Chronicles!</a></center></div>`
             });
             marker.addListener('click', function () {
                 infoWindow.open(map, marker);

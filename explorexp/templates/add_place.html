@@ -244,7 +244,7 @@ function capitalizeEachWord(str) {
     placeTypes.forEach(function(type) {
         var option = document.createElement("option");
         option.setAttribute("value", type);
-        option.textContent = capitalizeEachWord(type.replace(/_/g, " ")); // Capitalize each word and replac
+        option.textContent = capitalizeEachWord(type.replace(/_/g, " ")); // Capitalize each word and replace
         select.appendChild(option);
     });
 </script>
