@@ -2,10 +2,13 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.db.models import Sum
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.views import generic, View
-from .models import Category, UserProfile
+from .models import Category, UserProfile, Post
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .forms import PlaceForm
@@ -13,7 +16,6 @@ from django.views import generic, View
 from .models import Category, Place
 from django.http import JsonResponse
 from django.template.defaultfilters import slugify
-
 
 def home(request):
     return render(request, 'home.html')
@@ -40,7 +42,7 @@ def add_place(request):
         form = PlaceForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('')  # Redirect to a success page
+            return redirect('index')  # Redirect to a success page
     else:
         form = PlaceForm()
     return render(request, 'add_place.html', {'form': form})
@@ -55,13 +57,33 @@ class CategoriesView(generic.ListView):
         """
         return Category.objects.all()
 
+def get_locations(request):
+    selected_category = request.GET.get('category', '')
+
+    # Fetch data from the Place model based on the selected category
+    places = Place.objects.filter(type=selected_category).values('name', 'lat', 'long')
+
+    # Convert the queryset to a list and prepare the response
+    locations = list(places)
+    response_data = {'locations': locations}
+
+    return JsonResponse(response_data)
 
 def view_profile(request, username):
     user_found = User.objects.get(username=username)
-    #user_profile, created = UserProfile.objects.get_or_create(user=username)
+    user_found = get_object_or_404(User, username=username)
+    user_profile, created = UserProfile.objects.get_or_create(user=user_found)
+    challenges_completed = user_profile.challenges_completed.all()
+    total_points_completed = user_profile.challenges_completed.aggregate(total_points=Sum('points'))[
+                                 'total_points'] or 0
+    posts = Post.objects.filter(user=user_found)
+
     context = {
         "USER_PROFILE": user_found,
-        #"CHALLENGES": profile.challenges_completed.all()
+        "CHALLENGES_COMPLETED": challenges_completed,
+        "total_points_completed": total_points_completed,
+        "USER_POSTS": posts
+
     }
     return render(request, 'profile.html', context=context)
 
@@ -76,4 +98,3 @@ def get_locations(request):
     response_data = {'locations': locations}
 
     return JsonResponse(response_data)
-
