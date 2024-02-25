@@ -1,5 +1,5 @@
 # homepage/views.py
-
+from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.db.models import Sum
@@ -20,6 +20,7 @@ from django.http import JsonResponse
 from django.template.defaultfilters import slugify
 import re
 
+
 def home(request):
     return render(request, 'home.html')
 
@@ -39,6 +40,7 @@ def index(request):
 def logout_view(request):
     logout(request)
     return redirect('index')
+
 
 def add_place(request):
     if request.method == 'POST':
@@ -74,6 +76,7 @@ def get_locations(request):
 
     return JsonResponse(response_data)
 
+
 def view_profile(request, username):
     user_found = get_object_or_404(User, username=username)
     user_profile, created = UserProfile.objects.get_or_create(user=user_found)
@@ -87,9 +90,9 @@ def view_profile(request, username):
         "CHALLENGES_COMPLETED": challenges_completed,
         "total_points_completed": total_points_completed,
         "USER_POSTS": posts
-
     }
     return render(request, 'profile.html', context=context)
+
 
 def get_locations(request):
     selected_category = request.GET.get('category', '')
@@ -103,12 +106,22 @@ def get_locations(request):
 
     return JsonResponse(response_data)
 
+
 class PlacePageView(View):
     template_name = 'placePage.html'
 
     def get(self, request, name_slug):
         name = re.sub('[^0-9a-zA-Z]+', '-', name_slug)
-        print(name)
         place = get_object_or_404(Place, name_slug=name)
+        print(place)
+        context = {
+            "PLACE": place,
+            "NAME_SLUG": name_slug
+        }
         return render(request, self.template_name, {'place': place})
 
+
+def view_place(request):
+    location_name = request.GET.get('name_slug', '')
+    name = re.sub('[^0-9a-zA-Z]+', '-', location_name)
+    return render(request, 'placePage.html', {"PLACE_NAME": name})
