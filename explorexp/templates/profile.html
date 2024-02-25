@@ -28,6 +28,13 @@
             font-size: 16px;
             margin-top: 5px;
         }
+
+        .post-container {
+            border: 2px solid #ccc; /* Border style */
+            border-radius: 10px; /* Rounded border */
+            padding: 10px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -42,12 +49,14 @@
         {% endfor %}
     </ul>
     <h2>Total Points Completed: {{ total_points_completed }}</h2>
-    <ul>
-        {% for post in USER_POSTS %}
-            <b>{{ post.date }}: {{ post.challenge }}</b>
-            <p>{{ post.comment }}</p>
-        {% endfor %}
-    </ul>
+    <div class="post-container">
+        <ul>
+            {% for post in USER_POSTS %}
+                <b>{{ post.date }}: {{ post.challenge }}</b>
+                <p>{{ post.comment }}</p>
+            {% endfor %}
+        </ul>
+    </div>
 
 </body>
 </html>
