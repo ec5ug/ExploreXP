@@ -17,7 +17,7 @@ def home(request):
 def map(request):
     key = request.session.get("API_KEY")
     context = {
-        'key':key,
+        'key': key,
     }
     return render(request, 'map.html', context)
 
@@ -32,6 +32,7 @@ def add_place(request):
         form = PlaceForm()
     return render(request, 'add_place.html', {'form': form})
 
+
 class CategoriesView(generic.ListView):
     template_name = "categories.html"
     context_object_name = "categories"
@@ -41,6 +42,7 @@ class CategoriesView(generic.ListView):
         Return the list of categories.
         """
         return Category.objects.all()
+
 
 def get_locations(request):
     selected_category = request.GET.get('category', '')
@@ -54,8 +56,9 @@ def get_locations(request):
 
     return JsonResponse(response_data)
 
+
 class PlacePageView(View):
-    template_name = 'pagePlaces.html'
+    template_name = 'placePage.html'
 
     def get(self, request, name_slug):
         place = get_object_or_404(Place, name_slug=name_slug)
