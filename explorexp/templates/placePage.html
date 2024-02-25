@@ -3,7 +3,7 @@
 {% include 'navbar.html' %}
 <style>
     body {
-      font-family: 'Times New Roman', serif;
+      font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
       background-color: #f8f8f8;
       margin: 0;
       padding:0;
@@ -34,26 +34,59 @@
             background-color: #6493D8;
         }
 
-        .category-link {
-        display: inline-block; /* Display buttons inline */
-        margin-right: 10px; /* Add margin to separate buttons */
-        padding: 10px 20px;
-        background-color: #f46e1e;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-        }
 
-        .category-link:hover {
-            background-color: #f46e1e;
-        }
+        .btn-sub {
+        appearance: none;
+  background-color: #3F88C5;
+  border: 2px solid #3F88C5;
+  border-radius: 15px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 15px;
+    margin-top: 0;
+    margin-bottom: 0;
+  min-height: 40px;
+  min-width: 0;
+  outline: none;
+        margin-top: 20px;
+  padding: 16px 24px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 40%;
+  will-change: transform;
+    }
+
+    .btn-sub:disabled {
+  pointer-events: none;
+}
+
+.btn-sub:hover {
+  color: #fff;
+  background-color: #265c89;
+  transform: translateY(-2px);
+    border: 2px solid #265c89;
+}
+
+.btn-sub:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
  </style>
 <head>
     <meta charset="UTF-8">
-    <title>{{PLACE_NAME}}</title>
+    <title>{{PLACE_OBJECT.name}}</title>
   <p></p>
-    <h1 align="center">{{PLACE_NAME}}</h1>
+    <h1 align="center">{{PLACE_OBJECT.name}}</h1>
 </head>
 <body>
     <div class="text" style="border:solid" id="show-challenges">
@@ -65,13 +98,17 @@
         </ul>
         <form method="post">
             {% csrf_token %}
+            <div>
             <label for="c_name">Challenge Name:</label>
             <input type="text" id="c_name" name="name" required>
+            </div>
             <label for="c_desc">Description:</label>
             <input type="text" id="c_desc" name="description" required>
             <input type="hidden" id="place" name="place" value= "{{ PLACE_OBJECT }}">
             <input type="hidden" id="c_points" name="points" value="3">
-            <button type="submit">Submit Challenge</button>
+            <div>
+            <button class="btn-sub" type="submit">Submit Challenge</button>
+            </div>
         </form>
     </div>
     <div class="text" style="border:solid" id="show-comments">
