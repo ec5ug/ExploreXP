@@ -3,7 +3,7 @@
 {% include 'navbar.html' %}
 <style>
     body {
-      font-family: 'Times New Roman', serif;
+      font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
       background-color: #f8f8f8;
       margin: 0;
       padding:0;
@@ -20,34 +20,81 @@
             display: inline-block;
             vertical-align: top; /* Align to the top of the map */
             border-radius: 20px;
-            background-color: #6493D8;
-            padding: 20px;
+            background-color: rgba(63, 136, 197, 0.25);
+            padding: 60px;
+            font-size: larger;
         }
 
         #show-comments {
             display: inline-block;
             vertical-align: top; /* Align to the top of the map */
-            padding: 20px;
+            padding: 60px;
             width: 40vw; /* Adjust the width of the list as needed */
             height: 80vh; /* Add scroll if the list exceeds the height */
             border-radius: 20px;
-            background-color: #6493D8;
+            background-color: rgba(63, 136, 197, 0.65);
+            font-size: larger;
         }
 
-        .category-link {
-        display: inline-block; /* Display buttons inline */
-        margin-right: 10px; /* Add margin to separate buttons */
-        padding: 10px 20px;
-        background-color: #f46e1e;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-        }
 
-        .category-link:hover {
-            background-color: #f46e1e;
-        }
+        .btn-sub {
+        appearance: none;
+  background-color: #3F88C5;
+  border: 2px solid #3F88C5;
+  border-radius: 15px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-size: larger;
+  font-weight: 600;
+  line-height: normal;
+  margin: 15px;
+    margin-top: 0;
+    margin-bottom: 0;
+  min-height: 40px;
+  min-width: 0;
+  outline: none;
+        margin-top: 20px;
+  padding: 16px 24px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 50%;
+  will-change: transform;
+    }
+
+    .btn-sub:disabled {
+  pointer-events: none;
+}
+
+.btn-sub:hover {
+  color: #fff;
+  background-color: #265c89;
+  transform: translateY(-2px);
+    border: 2px solid #265c89;
+}
+
+.btn-sub:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+#challengeChoices {
+  width: 40%; /* Adjust width as needed */
+
+    padding: 10px 24px;
+     border: 2px solid #1A1A1A;
+   background-color: transparent;
+  border-radius: 15px;
+    font-weight: 600;
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+
  </style>
 
 <script>
@@ -56,9 +103,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{{PLACE_NAME}}</title>
+    <title>{{PLACE_OBJECT.name}}</title>
   <p></p>
-    <h1 align="center">{{PLACE_NAME}}</h1>
+    <h1 align="center">{{PLACE_OBJECT.name}}</h1>
 </head>
 <body>
     <div class="text" style="border:solid" id="show-challenges">
@@ -68,31 +115,25 @@
                 <li>{{ challenge.name }} - {{ challenge.description }}</li>
             {% endfor %}
         </ul>
-        <form method="post">
-            {% csrf_token %}
-            <label for="c_name">Challenge Name:</label>
-            <input type="text" id="c_name" name="name" required>
-            <label for="c_desc">Description:</label>
-            <input type="text" id="c_desc" name="description" required>
-            <div class="dropdown-content" id="categoryForm">
-                <select id="id_type" name="category" required>
-                    <option disabled selected value>Categories</option>
-                    <option value="Study Spaces">Study Spaces</option>
-                    <option value="Lounges">Lounges</option>
-                    <option value="Cafés">Cafés</option>
-                    <option value="Libraries">Libraries</option>
-                    <option value="Museums">Museums</option>
-                    <option value="Gyms">Gyms</option>
-                    <option value="Parks">Parks</option>
-                    <option value="Arcades">Arcades</option>
-                    <option value="Restaurants">Restaurants</option>
-                    <option value="Night Life">Night Life</option>
-                </select>
-            </div>
-            <input type="hidden" id="place" name="place" value= "{{ PLACE_OBJECT }}">
-            <input type="hidden" id="c_points" name="points" value="3">
-            <button type="submit">Submit Challenge</button>
-        </form>
+    <form method="post">
+    {% csrf_token %}
+    <div style="margin-bottom: 30px">
+        <label for="c_name">Challenge Name:</label>
+        <input type="text" style="border: none; border-bottom: 2px solid #1a1a1a; background-color: transparent" id="c_name" name="name" required>
+    </div>
+    <div style="text-align: center; margin-bottom: 10px;"> <!-- Center the description label -->
+        <label for="c_desc">Description:</label>
+    </div>
+    <div style="text-align: center; margin-bottom: 10px;"> <!-- Center the textarea -->
+        <textarea type="text" style="width: 450px; height: 100px" id="c_desc" name="description" required></textarea>
+    </div>
+    <input type="hidden" id="place" name="place" value="{{ PLACE_OBJECT }}">
+    <input type="hidden" id="c_points" name="points" value="3">
+        <input type="hidden" id="category" name="category" value="Museum">
+    <div style="text-align: center;">
+        <button class="btn-sub" type="submit">Submit Challenge</button>
+    </div>
+</form>
     </div>
     <div class="text" style="border:solid" id="show-comments">
         <h1>Adventure Chronicles</h1>
@@ -102,22 +143,28 @@
             {% endfor %}
         </ul>
         <form method="post">
-            {% csrf_token %}
-            <label for="comment">Chronicle:</label>
-            <input type="text" id="comment" name="comment" required>
-            <div class="dropdown-content" id="challengeForm">
-                <select id="challengeChoices" name="challenge" required>
-                    <option disabled selected value>Challenges</option>
-                    {% for obj in CHALLENGES %}
-                        <option value="{{ obj.name }}">{{ obj.name }}</option>  <!-- Modify 'name' attribute based on your model field -->
-                    {% endfor %}
-                </select>
-            </div>
-            <input type="hidden" id="place1" name="place" value= "{{ PLACE_OBJECT }}">
-            <input type="hidden" id="user1" name="user" value="{{ request.user.username }}">
-            <input type="hidden" id="date1" name="date" value="date published">
-            <button type="submit">Submit Challenge</button>
-        </form>
+    {% csrf_token %}
+    <div style="text-align: center; margin-bottom: 10px;"> <!-- Center the "Chronicle" label -->
+        <label for="comment">Chronicle:</label>
+    </div>
+    <div style="text-align: center; margin-bottom: 10px;"> <!-- Center the textarea -->
+        <textarea type="text" style="width: 450px; height: 100px" id="comment" name="comment" required></textarea>
+    </div>
+    <div class="dropdown-content" id="challengeForm" style="text-align: center; margin-bottom: 10px;"> <!-- Center the dropdown -->
+        <select id="challengeChoices" name="challenge" required>
+            <option disabled selected value>Challenges</option>
+            {% for obj in CHALLENGES %}
+                <option value="{{ obj.name }}">{{ obj.name }}</option>  <!-- Modify 'name' attribute based on your model field -->
+            {% endfor %}
+        </select>
+    </div>
+    <input type="hidden" id="place1" name="place" value="{{ PLACE_OBJECT }}">
+    <input type="hidden" id="user1" name="user" value="{{ request.user.username }}">
+    <input type="hidden" id="date1" name="date" value="date published">
+    <div style="text-align: center;"> <!-- Center the button -->
+        <button class="btn-sub" type="submit">Post Chronicle</button>
+    </div>
+</form>
     </div>
 </body>
 </html>
