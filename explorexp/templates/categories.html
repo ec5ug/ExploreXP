@@ -1,6 +1,7 @@
 
 {% extends 'mapBase.html' %}
 {% load static %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -40,22 +41,86 @@
             padding: 20px;
             width: 40vw; /* Adjust the width of the list as needed */
             overflow-y: auto; /* Add scroll if the list exceeds the height */
+            font-weight: bold;
         }
 
-        .category-link {
-        display: inline-block; /* Display buttons inline */
-        margin-right: 10px; /* Add margin to separate buttons */
-        padding: 10px 20px;
-        background-color: #f46e1e;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-        }
 
-        .category-link:hover {
-            background-color: #f46e1e;
-        }
+
+    .category-link:hover {
+      background-color: #f46e1e;
+    }
+.category-link {
+  appearance: none;
+  background-color: transparent;
+  border: 2px solid #1A1A1A;
+  border-radius: 15px;
+  box-sizing: border-box;
+  color: #3B3B3B;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 15px;
+    margin-top: 0;
+    margin-bottom: 0;
+  min-height: 60px;
+  min-width: 0;
+  outline: none;
+  padding: 16px 24px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 9.5%;
+  will-change: transform;
+}
+
+.category-link:disabled {
+  pointer-events: none;
+}
+
+.category-link:hover {
+  color: #fff;
+  background-color: #3F88C5;
+  transform: translateY(-2px);
+    border: 2px solid #3F88C5;
+}
+
+.category-link:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+.btn_sub {
+  width: 100px; /* Adjust width as needed */
+  height: 100px; /* Adjust height as needed */
+
+  background-size: cover; /* Adjust background size as needed */
+  background-repeat: no-repeat; /* Prevent background image from repeating */
+  background-position: center; /* Center the background image */
+  border: none; /* Remove border */
+  outline: none; /* Remove outline */
+    background-color: transparent;
+}
+
+
+#id_type {
+  width: 10%; /* Adjust width as needed */
+  padding: 10px; /* Adjust padding as needed */
+    padding: 16px 24px;
+     border: 2px solid #1A1A1A;
+   background-color: transparent;
+  border-radius: 15px;
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+
+
+
+
  </style>
 
 <script>
@@ -81,27 +146,28 @@
 
 </script>
 
-<h1>Welcome, {{user.username}}!</h1>
-
-  <button class="filterButton category-link" data-location-type="university">Study Spaces</button>
+<div class="scrollable-container">
   <button class="filterButton category-link" data-location-type="cafe">Cafés</button>
   <button class="filterButton category-link" data-location-type="library">Libraries</button>
   <button class="filterButton category-link" data-location-type="tourist_attraction">Attractions</button>
   <button class="filterButton category-link" data-location-type="museum">Museums</button>
   <button class="filterButton category-link" data-location-type="gym">Gyms</button>
   <button class="filterButton category-link" data-location-type="park">Parks</button>
-  <button class="filterButton category-link" data-location-type="shopping_mall">Mall</button>
   <button class="filterButton category-link" data-location-type="restaurant">Restaurants</button>
   <button class="filterButton category-link" data-location-type="bar">Night Life</button>
 
-  <form id="categoryForm" method="post">
+    <div class="dropdown-content" id="categoryForm">
         {% csrf_token %}
-        <label for="id_type">Or Select a Category:</label>
         <select id="id_type" name="type" required>
-            <option value="" disabled selected>Select a Category</option>
+            <option value="" disabled selected>More Filters</option>
         </select>
-        <button type="button" onclick="submitForm()">Submit Place</button>
-  </form>
+        <button class="btn_sub" type="button" onclick="submitForm()"><img style="width:40px;" src='../../../static/images/search2.png'></button>
+
+</div>
+
+</div>
+
+
 
 <script>
 function formatCategoryName(category) {
@@ -142,8 +208,24 @@ function capitalizeEachWord(str) {
                     if (data.locations && data.locations.length > 0) {
                         console.log(`Locations for ${selectedCategory}:`, data.locations);
                         initMap(data.locations);  // Initialize the map with fetched data
+
+                        var categoryList = document.getElementById("category-list");
+                        categoryList.innerHTML = '';
+
+                        var categoryHeading = document.createElement("h2");
+                        categoryHeading.textContent = `${formattedCategory}:`;
+                        categoryList.appendChild(categoryHeading);
+
+                        data.locations.forEach(function(place) {
+                        var placeItem = document.createElement("p");
+                        placeItem.style.fontSize = "30px";
+                        placeItem.textContent = place.name; // Adjust this based on your place object
+                        categoryList.appendChild(placeItem);
+                    });
+
                     } else {
                         console.error(`No locations data available for ${selectedCategory}.`);
+                        document.getElementById("category-list").innerHTML = '<p>There are no locations that belong to this category yet. How about try adding some?</p>';
                     }
                 })
                 .catch(error => console.error(`Error fetching locations for ${selectedCategory}:`, error));
@@ -246,7 +328,6 @@ function initMap(locations) {
 
         <div class="text" id="category-list">
             <h1><center><p id="selectedCategory"> Choose a Category! </p></center></h1>
-
             <!-- Add content to the category list as needed -->
         </div>
     </div>

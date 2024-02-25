@@ -20,7 +20,6 @@ from django.http import JsonResponse
 from django.template.defaultfilters import slugify
 import re
 
-
 def home(request):
     return render(request, 'home.html')
 
@@ -79,17 +78,22 @@ def get_locations(request):
 
 def view_profile(request, username):
     user_found = get_object_or_404(User, username=username)
-    user_profile, created = UserProfile.objects.get_or_create(user=user_found)
-    challenges_completed = user_profile.challenges_completed.all()
-    total_points_completed = user_profile.challenges_completed.aggregate(total_points=Sum('points'))[
-                                 'total_points'] or 0
     posts = Post.objects.filter(user=user_found)
+    challenges_completed = Challenge.objects.filter(post__in=posts)
+    total_points_completed = challenges_completed.aggregate(total_points=Sum('points'))['total_points'] or 0
+    badges = dict()
+    for challenge in challenges_completed:
+        if challenge.category.name == 'Libraries':
+            badges['Libraries'] = 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzRyNTNxNGE2dTQ0bnBwdTQ4ejc1bm56cjFwaWZwN2twZTBwd29lMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4KGVH1hRpRke7ZnaUv/giphy.gif'
+        if challenge.category.name == 'Café':
+            badges['Café'] = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGZ0cTFkbWJ6MnBsMnU2aDI2MzlxOG41bHg3YXE3OHEybDI1aG4zdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/oZTBoGcs5dcXhaiYxz/giphy.gif"
 
     context = {
         "USER_PROFILE": user_found,
         "CHALLENGES_COMPLETED": challenges_completed,
         "total_points_completed": total_points_completed,
-        "USER_POSTS": posts
+        "USER_POSTS": posts,
+        "BADGES": badges
     }
     return render(request, 'profile.html', context=context)
 
