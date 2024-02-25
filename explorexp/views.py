@@ -175,3 +175,11 @@ def view_place(request):
         "PLACE_OBJECT": place_obj
     }
     return render(request, 'placePage.html', context)
+
+def show_leaderboard(request):
+    users = User.objects.annotate(total_points=Sum('post__challenge__points')).order_by('-total_points')
+    context = {
+        "users": users
+    }
+    return render(request, 'leaderboard.html', context)
+

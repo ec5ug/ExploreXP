@@ -33,5 +33,6 @@ urlpatterns = [
     path('add_place/', views.add_place, name="add_place"),
     path('categories/', views.CategoriesView.as_view(), name='categories'),
     path('get_locations/', get_locations, name='get_locations'),
-    path('placePage/', views.view_place, name='place_page')
+    path('placePage/', views.view_place, name='place_page'),
+    path('leaderboard/', views.show_leaderboard, name='leaderboard')
 ]
