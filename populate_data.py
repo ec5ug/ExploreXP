@@ -22,7 +22,7 @@ def populate_places():
     Place.objects.create(lat=40.781338639190814, long=-73.97399671761092, type='museum', name='American Museum of Natural History', name_slug='american_museum_of_natural_history')
     Place.objects.create(lat=38.03289080184863, long=-78.51357280426573, type='gym', name='Aquatic Fitness Center', name_slug='aquatic_fitness_center')
     Place.objects.create(lat=40.43510922356903, long=-79.9417576917797, type='park', name='Schenley Park', name_slug='schenley_park')
-    Place.objects.create(lat=38.02984964576892, long=-78.47885264979851, type = 'attraction',name='Decades Arcade', name_slug='decades_arcade')
+    Place.objects.create(lat=38.02984964576892, long=-78.47885264979851, type = 'attraction',name='Decades Arcade', name_slug='decapydes_arcade')
     Place.objects.create(lat=40.42785065391026, long=-79.70121367133262, type='restaurant', name='Burgatory', name_slug='burgatory')
     Place.objects.create(lat=38.90847883310629, long=-77.04243919577, type='cafe', name='Cafe Citron', name_slug='cafe_citron')
 
