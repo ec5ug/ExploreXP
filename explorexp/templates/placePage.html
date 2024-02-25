@@ -93,7 +93,6 @@
             <input type="hidden" id="c_points" name="points" value="3">
             <button type="submit">Submit Challenge</button>
         </form>
-
     </div>
     <div class="text" style="border:solid" id="show-comments">
         <h1>Adventure Chronicles</h1>
@@ -102,6 +101,23 @@
                 <li>{{ post.date }} - {{ post.user.username}} - {{ post.place}} - {{ post.challenge.name }} - {{ post.comment }}</li>
             {% endfor %}
         </ul>
+        <form method="post">
+            {% csrf_token %}
+            <label for="comment">Chronicle:</label>
+            <input type="text" id="comment" name="comment" required>
+            <div class="dropdown-content" id="challengeForm">
+                <select id="challengeChoices" name="challenge" required>
+                    <option disabled selected value>Challenges</option>
+                    {% for obj in CHALLENGES %}
+                        <option value="{{ obj.name }}">{{ obj.name }}</option>  <!-- Modify 'name' attribute based on your model field -->
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="hidden" id="place1" name="place" value= "{{ PLACE_OBJECT }}">
+            <input type="hidden" id="user1" name="user" value="{{ request.user.username }}">
+            <input type="hidden" id="date1" name="date" value="date published">
+            <button type="submit">Submit Challenge</button>
+        </form>
     </div>
 </body>
 </html>

@@ -1,4 +1,5 @@
 # homepage/views.py
+from datetime import datetime
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -8,12 +9,15 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.views import generic, View
+from datetime import datetime
+
+from auth_app import models
 from .models import Category, UserProfile, Post, Challenge
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
-from .forms import PlaceForm, ChallengeForm
+from .forms import PlaceForm, ChallengeForm, PostForm
 from django.views import generic, View
 from .models import Category, Place
 from django.http import JsonResponse
@@ -127,18 +131,29 @@ class PlacePageView(View):
 
 def view_place(request):
     if request.method == 'POST':
-        p_obj = Place.objects.filter(name=request.POST['place'])[0]
-        c_obj = Category.objects.filter(name=request.POST['category'])[0]
-        alt_response = request.POST.copy()
-        alt_response['place'] = p_obj
-        alt_response['category'] = c_obj
-        print(alt_response)
-        form = ChallengeForm(alt_response)
-        if form.is_valid():
-            print("FORM IS VALID")
-            form.save()
+        if 'user' in request.POST.keys():
+            uo = User.objects.filter(username=request.POST['user'])[0]
+            po = Place.objects.filter(name=request.POST['place'])[0]
+            co = Challenge.objects.filter(name=request.POST['challenge'])[0]
+            do = datetime.now()
+            other_response = request.POST.copy()
+            other_response['user'] = uo
+            other_response['place'] = po
+            other_response['challenge'] = co
+            other_response['date'] = do
+            form = PostForm(other_response)
+            if form.is_valid():
+                form.save()
+        else:
+            p_obj = Place.objects.filter(name=request.POST['place'])[0]
+            c_obj = Category.objects.filter(name=request.POST['category'])[0]
+            alt_response = request.POST.copy()
+            alt_response['place'] = p_obj
+            alt_response['category'] = c_obj
+            form = ChallengeForm(alt_response)
+            if form.is_valid():
+                form.save()
         location_name = request.POST['place']
-
     else:
         location_name = request.GET.get('name_slug', '')
 
@@ -147,7 +162,7 @@ def view_place(request):
     challenges = Challenge.objects.filter(place=place_obj)
     chronicles = Post.objects.filter(place=place_obj)
     context = {
-        "PLACE_NAME": name,
+        "PLACE_NAME": location_name,
         "CHALLENGES": challenges,
         "CHRONICLES": chronicles,
         "PLACE_OBJECT": place_obj
