@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.views import generic, View
-from .models import Category, UserProfile, Post
+from .models import Category, UserProfile, Post, Challenge
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -124,4 +124,12 @@ class PlacePageView(View):
 def view_place(request):
     location_name = request.GET.get('name_slug', '')
     name = re.sub('[^0-9a-zA-Z]+', '-', location_name)
-    return render(request, 'placePage.html', {"PLACE_NAME": name})
+    place_obj = Place.objects.filter(name=location_name)[0]
+    challenges = Challenge.objects.filter(place=place_obj)
+    chronicles = Post.objects.filter(place=place_obj)
+    context = {
+        "PLACE_NAME": name,
+        "CHALLENGES": challenges,
+        "CHRONICLES": chronicles
+    }
+    return render(request, 'placePage.html', context)
