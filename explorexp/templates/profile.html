@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 {% include 'navbar.html' %}
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
+    <h1>Welcome {{USER_PROFILE}} </h1>
 </head>
 <body>
-    <h1>Welcome {{ USER_PROFILE }}</h1>
     <h2>Challenges Completed:</h2>
     <ul>
         {% for challenge in CHALLENGES_COMPLETED %}
@@ -17,7 +16,7 @@
 <h2>Total Points Completed: {{ total_points_completed }}</h2>
 <ul>
         {% for post in USER_POSTS %}
-            <li>{{ post.date }} - {{ post.place}} - {{ post.challenge }} - {{ post.comment }}</li>
+            <li>{{ post.date }} -  {{ post.place }} - {{ post.challenge }} - {{ post.comment }}</li>
         {% endfor %}
     </ul>
 

@@ -6,17 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ExploreXP Home</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            overflow: hidden; /* Prevent scrolling */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center; /* Center items horizontally */
-            background-color: #fdfcfa; /* Very light cream color */
-        }
+
 
         .gif-container {
             flex-grow: 1;
@@ -33,9 +23,11 @@
         }
 
         .login-container {
+
             text-align: center;
             margin-bottom: 20px;
         }
+
 
         .login-button {
             cursor: pointer;
@@ -57,10 +49,12 @@
         <div class="gif-container">
             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnAyNjZqaDliODc3dHQyajU5NHNodnlwN3ptY2lrNHMzbWUxNHd0byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AtnhTmX2BfJMaJa73A/giphy.gif" alt="GIF">
         </div>
-
+        <div class="login-container">
         <a href="{% provider_login_url 'google' %}" method="post">
-            <img class='login-button' src="../../../static/images/play_button.png" alt="Login with Google">
+            <img class='login-button'  src="../../../static/images/play_button.png" alt="Login with Google">
         </a>
+        </div>
+
     {% endif %}
 
 

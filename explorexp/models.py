@@ -11,7 +11,7 @@ class Place(models.Model):
     lat = models.DecimalField(max_digits=20, decimal_places=16)
     type = models.CharField(max_length=200)
     name = models.CharField(max_length=100)
-    name_slug = models.SlugField(unique=True)
+    name_slug = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name

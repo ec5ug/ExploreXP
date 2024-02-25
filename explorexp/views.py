@@ -1,19 +1,24 @@
 # homepage/views.py
+from django.db import IntegrityError
+from django.http import HttpResponse
+from django.shortcuts import render
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.views import generic, View
-from .models import Category, UserProfile, Post
+from .models import Category, UserProfile, Post, Challenge
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import DetailView
 from .forms import PlaceForm
 from django.views import generic, View
 from .models import Category, Place
 from django.http import JsonResponse
 from django.template.defaultfilters import slugify
-
+import re
 
 
 def home(request):
@@ -36,6 +41,7 @@ def logout_view(request):
     logout(request)
     return redirect('index')
 
+
 def add_place(request):
     if request.method == 'POST':
         form = PlaceForm(request.POST)
@@ -57,6 +63,7 @@ class CategoriesView(generic.ListView):
         """
         return Category.objects.all()
 
+
 def get_locations(request):
     selected_category = request.GET.get('category', '')
 
@@ -68,6 +75,7 @@ def get_locations(request):
     response_data = {'locations': locations}
 
     return JsonResponse(response_data)
+
 
 def view_profile(request, username):
     user_found = get_object_or_404(User, username=username)
@@ -82,7 +90,46 @@ def view_profile(request, username):
         "CHALLENGES_COMPLETED": challenges_completed,
         "total_points_completed": total_points_completed,
         "USER_POSTS": posts
-
     }
     return render(request, 'profile.html', context=context)
 
+
+def get_locations(request):
+    selected_category = request.GET.get('category', '')
+
+    # Fetch data from the Place model based on the selected category
+    places = Place.objects.filter(type=selected_category).values('name', 'lat', 'long')
+
+    # Convert the queryset to a list and prepare the response
+    locations = list(places)
+    response_data = {'locations': locations}
+
+    return JsonResponse(response_data)
+
+
+class PlacePageView(View):
+    template_name = 'placePage.html'
+
+    def get(self, request, name_slug):
+        name = re.sub('[^0-9a-zA-Z]+', '-', name_slug)
+        place = get_object_or_404(Place, name_slug=name)
+        print(place)
+        context = {
+            "PLACE": place,
+            "NAME_SLUG": name_slug
+        }
+        return render(request, self.template_name, {'place': place})
+
+
+def view_place(request):
+    location_name = request.GET.get('name_slug', '')
+    name = re.sub('[^0-9a-zA-Z]+', '-', location_name)
+    place_obj = Place.objects.filter(name=location_name)[0]
+    challenges = Challenge.objects.filter(place=place_obj)
+    chronicles = Post.objects.filter(place=place_obj)
+    context = {
+        "PLACE_NAME": name,
+        "CHALLENGES": challenges,
+        "CHRONICLES": chronicles
+    }
+    return render(request, 'placePage.html', context)
