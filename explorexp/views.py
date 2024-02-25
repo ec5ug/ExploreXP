@@ -8,7 +8,7 @@ from django.views import generic, View
 from .models import Category, Place
 from django.http import JsonResponse
 from django.template.defaultfilters import slugify
-
+import re
 
 def home(request):
     return render(request, 'home.html')
@@ -56,10 +56,11 @@ def get_locations(request):
 
     return JsonResponse(response_data)
 
-
 class PlacePageView(View):
     template_name = 'placePage.html'
 
     def get(self, request, name_slug):
-        place = get_object_or_404(Place, name_slug=name_slug)
+        name = re.sub('[^0-9a-zA-Z]+', '-', name_slug)
+        print(name)
+        place = get_object_or_404(Place, name_slug=name)
         return render(request, self.template_name, {'place': place})
