@@ -26,6 +26,7 @@ urlpatterns = [
     path('app/', include('allauth.urls')),
     path('', TemplateView.as_view(template_name='index.html'), name="index"),
     path('accounts/', include('allauth.urls')),
+
     path('logout/', views.logout_view, name='logout'),
     path('home', views.home, name="home"),
     path('categories/', views.CategoriesView.as_view(), name='categories'),
@@ -33,4 +34,5 @@ urlpatterns = [
     path('add_place/', views.add_place, name="add_place"),
     path('categories/', views.CategoriesView.as_view(), name='categories'),
     path('get_locations/', get_locations, name='get_locations'),
+
 ]

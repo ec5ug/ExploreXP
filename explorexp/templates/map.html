@@ -18,6 +18,7 @@
         };
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
+
         data.locations.forEach(function(location) {
         var marker = new google.maps.Marker({
             position: { lat: parseFloat(location.lat), lng: parseFloat(location.long) },
