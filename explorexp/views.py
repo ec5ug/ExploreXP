@@ -174,28 +174,9 @@ def view_place(request):
     return render(request, 'placePage.html', context)
 
 def show_leaderboard(request):
-    stats = {}
-    max = 0
-    max_user = None
-    all_users = User.objects.all()
-    user_order = [0] * len(all_users)
-    for user in User.objects.all():
-        user_found = get_object_or_404(User, username=user.username)
-        posts = Post.objects.filter(user=user_found)
-        challenges_completed = Challenge.objects.filter(post__in=posts)
-        total_points_completed = challenges_completed.aggregate(total_points=Sum('points'))['total_points'] or 0
-        stats[user] = total_points_completed
-    for i in range(0, len(all_users)):
-        for j in range(0, len(all_users)):
-            if stats[all_users[i]] > max:
-                max = stats[all_users[i]]
-                max_user = all_users[i]
-        user_order[i] = max_user
-        max = 0
-    print("USER_ORDER", user_order)
+    users = User.objects.annotate(total_points=Sum('post__challenge__points')).order_by('-total_points')
     context = {
-        "USERS_POINTS": stats,
-        "USERS_ORDER": user_order
+        "users": users
     }
     return render(request, 'leaderboard.html', context)
 
