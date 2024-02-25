@@ -182,8 +182,9 @@ function initMap(locations) {
 
             markers.push(marker);
 
-            var infoWindow = new google.maps.InfoWindow({
-                content: `<h3>${location.name}</h3>`
+            const infoWindow = new google.maps.InfoWindow({
+                content: `<div><strong><center>${location.name}</center></strong>` +
+                    `<center><a href="/placePage/${location.name_slug}">View Page</a></center></div>`
             });
 
             marker.addListener('click', function() {

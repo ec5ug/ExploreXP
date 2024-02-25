@@ -1,6 +1,8 @@
 # homepage/views.py
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import DetailView
+
 from .forms import PlaceForm
 from django.views import generic, View
 from .models import Category, Place
@@ -52,3 +54,9 @@ def get_locations(request):
 
     return JsonResponse(response_data)
 
+class PlacePageView(View):
+    template_name = 'pagePlaces.html'
+
+    def get(self, request, name_slug):
+        place = get_object_or_404(Place, name_slug=name_slug)
+        return render(request, self.template_name, {'place': place})

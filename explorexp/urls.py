@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
-from .views import get_locations
+from .views import get_locations, PlacePageView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -25,4 +25,5 @@ urlpatterns = [
     path('add_place/', views.add_place, name="add_place"),
     path('categories/', views.CategoriesView.as_view(), name='categories'),
     path('get_locations/', get_locations, name='get_locations'),
+    path('placePage/<str:name_slug>/', PlacePageView.as_view(), name='placePage'),
 ]
