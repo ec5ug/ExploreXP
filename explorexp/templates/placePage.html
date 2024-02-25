@@ -20,18 +20,20 @@
             display: inline-block;
             vertical-align: top; /* Align to the top of the map */
             border-radius: 20px;
-            background-color: #6493D8;
-            padding: 20px;
+            background-color: rgba(63, 136, 197, 0.25);
+            padding: 60px;
+            font-size: larger;
         }
 
         #show-comments {
             display: inline-block;
             vertical-align: top; /* Align to the top of the map */
-            padding: 20px;
+            padding: 60px;
             width: 40vw; /* Adjust the width of the list as needed */
             height: 80vh; /* Add scroll if the list exceeds the height */
             border-radius: 20px;
-            background-color: #6493D8;
+            background-color: rgba(63, 136, 197, 0.65);
+            font-size: larger;
         }
 
 
@@ -45,7 +47,7 @@
   cursor: pointer;
   display: inline-block;
   font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-  font-size: 16px;
+  font-size: larger;
   font-weight: 600;
   line-height: normal;
   margin: 15px;
@@ -62,7 +64,7 @@
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  width: 40%;
+  width: 50%;
   will-change: transform;
     }
 
@@ -81,7 +83,24 @@
   box-shadow: none;
   transform: translateY(0);
 }
+
+#challengeChoices {
+  width: 40%; /* Adjust width as needed */
+
+    padding: 10px 24px;
+     border: 2px solid #1A1A1A;
+   background-color: transparent;
+  border-radius: 15px;
+    font-weight: 600;
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+
  </style>
+
+<script>
+     var categoryTypes = ['Study Spaces', 'Lounges', 'Café', 'Libraries', 'Museums', 'Gyms', 'Parks', 'Arcades', 'Restaurants', 'Night Life'];
+</script>
+
 <head>
     <meta charset="UTF-8">
     <title>{{PLACE_OBJECT.name}}</title>
@@ -96,20 +115,24 @@
                 <li>{{ challenge.name }} - {{ challenge.description }}</li>
             {% endfor %}
         </ul>
-        <form method="post">
-            {% csrf_token %}
-            <div>
-            <label for="c_name">Challenge Name:</label>
-            <input type="text" id="c_name" name="name" required>
-            </div>
-            <label for="c_desc">Description:</label>
-            <input type="text" id="c_desc" name="description" required>
-            <input type="hidden" id="place" name="place" value= "{{ PLACE_OBJECT }}">
-            <input type="hidden" id="c_points" name="points" value="3">
-            <div>
-            <button class="btn-sub" type="submit">Submit Challenge</button>
-            </div>
-        </form>
+    <form method="post">
+    {% csrf_token %}
+    <div style="margin-bottom: 30px">
+        <label for="c_name">Challenge Name:</label>
+        <input type="text" style="border: none; border-bottom: 2px solid #1a1a1a; background-color: transparent" id="c_name" name="name" required>
+    </div>
+    <div style="text-align: center; margin-bottom: 10px;"> <!-- Center the description label -->
+        <label for="c_desc">Description:</label>
+    </div>
+    <div style="text-align: center; margin-bottom: 10px;"> <!-- Center the textarea -->
+        <textarea type="text" style="width: 450px; height: 100px" id="c_desc" name="description" required></textarea>
+    </div>
+    <input type="hidden" id="place" name="place" value="{{ PLACE_OBJECT }}">
+    <input type="hidden" id="c_points" name="points" value="3">
+    <div style="text-align: center;">
+        <button class="btn-sub" type="submit">Submit Challenge</button>
+    </div>
+</form>
     </div>
     <div class="text" style="border:solid" id="show-comments">
         <h1>Adventure Chronicles</h1>
@@ -118,6 +141,29 @@
                 <li>{{ post.date }} - {{ post.user.username}} - {{ post.place}} - {{ post.challenge.name }} - {{ post.comment }}</li>
             {% endfor %}
         </ul>
+        <form method="post">
+    {% csrf_token %}
+    <div style="text-align: center; margin-bottom: 10px;"> <!-- Center the "Chronicle" label -->
+        <label for="comment">Chronicle:</label>
+    </div>
+    <div style="text-align: center; margin-bottom: 10px;"> <!-- Center the textarea -->
+        <textarea type="text" style="width: 450px; height: 100px" id="comment" name="comment" required></textarea>
+    </div>
+    <div class="dropdown-content" id="challengeForm" style="text-align: center; margin-bottom: 10px;"> <!-- Center the dropdown -->
+        <select id="challengeChoices" name="challenge" required>
+            <option disabled selected value>Challenges</option>
+            {% for obj in CHALLENGES %}
+                <option value="{{ obj.name }}">{{ obj.name }}</option>  <!-- Modify 'name' attribute based on your model field -->
+            {% endfor %}
+        </select>
+    </div>
+    <input type="hidden" id="place1" name="place" value="{{ PLACE_OBJECT }}">
+    <input type="hidden" id="user1" name="user" value="{{ request.user.username }}">
+    <input type="hidden" id="date1" name="date" value="date published">
+    <div style="text-align: center;"> <!-- Center the button -->
+        <button class="btn-sub" type="submit">Post Chronicle</button>
+    </div>
+</form>
     </div>
 </body>
 </html>
