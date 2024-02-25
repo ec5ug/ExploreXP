@@ -32,7 +32,7 @@ class Challenge(models.Model):
     place = models.ForeignKey(Place, related_name='challenges', on_delete=models.CASCADE)
     points = models.IntegerField(default=0)
     def __str__(self):
-        return f"{self.name} | {self.place}"
+        return f"{self.name} @ {self.place}"
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -5,19 +5,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
+    <style>
+        .badge-container {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .badge-item {
+            text-align: center;
+        }
+
+        .badge-image {
+            width: 150px; /* Set the width of the badge */
+            height: 150px; /* Set the height of the badge */
+            border-radius: 50%; /* Make the badge circular */
+            object-fit: cover; /* Ensure the image fills the circular area */
+        }
+
+        .badge-name {
+            font-size: 16px;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
     <h1>Welcome {{ USER_PROFILE }}</h1>
-    <h2>Challenges Completed:</h2>
-    <ul>
-        {% for challenge in CHALLENGES_COMPLETED %}
-            <li>{{ challenge.name }} - {{ challenge.description }}</li>
+    <h2>Badges:</h2>
+    <ul class="badge-container">
+        {% for label, url in BADGES.items %}
+            <li class="badge-item">
+                <img src="{{ url }}" alt="{{ label }}" class="badge-image">
+                <p class="badge-name">The Badge of {{ label }} </p>
+            </li>
         {% endfor %}
     </ul>
-<h2>Total Points Completed: {{ total_points_completed }}</h2>
-<ul>
+    <h2>Total Points Completed: {{ total_points_completed }}</h2>
+    <ul>
         {% for post in USER_POSTS %}
-            <li>{{ post.date }} - {{ post.place}} - {{ post.challenge }} - {{ post.comment }}</li>
+            <b>{{ post.date }}: {{ post.challenge }}</b>
+            <p>{{ post.comment }}</p>
         {% endfor %}
     </ul>
 

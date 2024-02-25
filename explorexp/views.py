@@ -72,11 +72,17 @@ def view_profile(request, username):
     posts = Post.objects.filter(user=user_found)
     challenges_completed = Challenge.objects.filter(post__in=posts)
     total_points_completed = challenges_completed.aggregate(total_points=Sum('points'))['total_points'] or 0
+    badges = dict()
+    for challenge in challenges_completed:
+        if challenge.category.name == 'Libraries':
+            badges['Libraries'] = 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzRyNTNxNGE2dTQ0bnBwdTQ4ejc1bm56cjFwaWZwN2twZTBwd29lMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4KGVH1hRpRke7ZnaUv/giphy.gif'
+
     context = {
         "USER_PROFILE": user_found,
         "CHALLENGES_COMPLETED": challenges_completed,
         "total_points_completed": total_points_completed,
-        "USER_POSTS": posts
+        "USER_POSTS": posts,
+        "BADGES": badges
     }
     return render(request, 'profile.html', context=context)
 
