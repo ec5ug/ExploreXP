@@ -87,6 +87,8 @@ def view_profile(request, username):
             badges['Libraries'] = 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzRyNTNxNGE2dTQ0bnBwdTQ4ejc1bm56cjFwaWZwN2twZTBwd29lMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4KGVH1hRpRke7ZnaUv/giphy.gif'
         if challenge.category.name == 'Café':
             badges['Café'] = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGZ0cTFkbWJ6MnBsMnU2aDI2MzlxOG41bHg3YXE3OHEybDI1aG4zdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/oZTBoGcs5dcXhaiYxz/giphy.gif"
+        if challenge.category.name == 'Gyms':
+            badges['Gyms'] = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGwwM2E5MWgyNm5ydGdkam5ydGthczRpeHI3bjNqcHI5Z3l1dGlkdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WeiaATvlqXdXOkj6Is/giphy.gif"
 
     context = {
         "USER_PROFILE": user_found,
