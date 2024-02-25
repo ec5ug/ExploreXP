@@ -9,15 +9,9 @@
 
 <body>
     {% if user.is_authenticated %}
-<<<<<<< HEAD
-    {% include 'navbar.html' %}
-    {% include 'categories.html' %}
-=======
         {% include 'navbar.html' %}
         {% include 'categories.html' %}
 
-
->>>>>>> 6bc257a56ae803b3363880f941b473c4064ca649
     {% else %}
         <a href="{% provider_login_url 'google' %}">Login with Google</a>
     {% endif %}

@@ -10,10 +10,6 @@
 
 
 {% block content %}
-<<<<<<< HEAD
-=======
-
->>>>>>> 6bc257a56ae803b3363880f941b473c4064ca649
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAc74O5Z2PVfxjPpuoqktAT5wGuiIs-qQ&callback=initMap">
     </script>
@@ -70,11 +66,7 @@
 
 </script>
 
-<<<<<<< HEAD
 <h1>Welcome, {{user.username}}!</h1>
-=======
-<h1>Welcome to categories!</h1>
->>>>>>> 6bc257a56ae803b3363880f941b473c4064ca649
 
   <button class="filterButton category-link" data-location-type="university">Study Spaces</button>
   <button class="filterButton category-link" data-location-type="cafe">Cafés</button>
@@ -166,11 +158,7 @@ function initMap(locations) {
     markers = [];
 
     var mapOptions = {
-<<<<<<< HEAD
         center: { lat: 38.0336, lng: -78.5080 },
-=======
-        center: {lat: 38.0336, lng: -78.5080},
->>>>>>> 6bc257a56ae803b3363880f941b473c4064ca649
         zoom: 15,
         styles: [
             {
@@ -186,15 +174,9 @@ function initMap(locations) {
     var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
     if (locations && locations.length > 0) {
-<<<<<<< HEAD
         locations.forEach(function(location) {
             var marker = new google.maps.Marker({
                 position: { lat: parseFloat(location.lat), lng: parseFloat(location.long) },
-=======
-        locations.forEach(function (location) {
-            var marker = new google.maps.Marker({
-                position: {lat: parseFloat(location.lat), lng: parseFloat(location.long)},
->>>>>>> 6bc257a56ae803b3363880f941b473c4064ca649
                 map: map,
                 title: location.name
             });
@@ -205,28 +187,17 @@ function initMap(locations) {
                 content: `<div><strong><center>${location.name}</center></strong>` +
                     `<center><a href="/placePage/${location.name}">View Page</a></center></div>`
             });
-
-<<<<<<< HEAD
-            marker.addListener('click', function() {
-=======
             marker.addListener('click', function () {
->>>>>>> 6bc257a56ae803b3363880f941b473c4064ca649
                 infoWindow.open(map, marker);
             });
         });
     } else {
         console.error('No locations data available.');
-<<<<<<< HEAD
     }
 }
-=======
 
-    }
-}
 </script>
 
-
->>>>>>> 6bc257a56ae803b3363880f941b473c4064ca649
 </script>
 
 
@@ -270,8 +241,3 @@ var markers = [];
 
 </body>
 
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 6bc257a56ae803b3363880f941b473c4064ca649

@@ -75,7 +75,6 @@ def get_locations(request):
     return JsonResponse(response_data)
 
 def view_profile(request, username):
-    user_found = User.objects.get(username=username)
     user_found = get_object_or_404(User, username=username)
     user_profile, created = UserProfile.objects.get_or_create(user=user_found)
     challenges_completed = user_profile.challenges_completed.all()
