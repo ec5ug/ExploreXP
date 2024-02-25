@@ -214,7 +214,7 @@ function initMap(locations) {
 
             const infoWindow = new google.maps.InfoWindow({
                 content: `<div><strong><center>${location.name}</center></strong>` +
-                    `<center><a href="/placePage/${location.name}">View Page</a></center></div>`
+                    `<center><a href="/placePage/?name_slug=${location.name}&lat=${location.lat}&long=${location.long}&type=${location.type}">View Page</a></center></div>`
             });
             marker.addListener('click', function () {
                 infoWindow.open(map, marker);
