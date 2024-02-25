@@ -40,6 +40,7 @@
             padding: 20px;
             width: 40vw; /* Adjust the width of the list as needed */
             overflow-y: auto; /* Add scroll if the list exceeds the height */
+            font-weight: bold;
         }
 
         .category-link {
@@ -142,8 +143,24 @@ function capitalizeEachWord(str) {
                     if (data.locations && data.locations.length > 0) {
                         console.log(`Locations for ${selectedCategory}:`, data.locations);
                         initMap(data.locations);  // Initialize the map with fetched data
+
+                        var categoryList = document.getElementById("category-list");
+                        categoryList.innerHTML = '';
+
+                        var categoryHeading = document.createElement("h2");
+                        categoryHeading.textContent = `${formattedCategory}:`;
+                        categoryList.appendChild(categoryHeading);
+
+                        data.locations.forEach(function(place) {
+                        var placeItem = document.createElement("p");
+                        placeItem.style.fontSize = "30px";
+                        placeItem.textContent = place.name; // Adjust this based on your place object
+                        categoryList.appendChild(placeItem);
+                    });
+
                     } else {
                         console.error(`No locations data available for ${selectedCategory}.`);
+                        document.getElementById("category-list").innerHTML = '<p>There are no locations that belong to this category yet. How about try adding some?</p>';
                     }
                 })
                 .catch(error => console.error(`Error fetching locations for ${selectedCategory}:`, error));
@@ -246,7 +263,6 @@ function initMap(locations) {
 
         <div class="text" id="category-list">
             <h1><center><p id="selectedCategory"> Choose a Category! </p></center></h1>
-
             <!-- Add content to the category list as needed -->
         </div>
     </div>
