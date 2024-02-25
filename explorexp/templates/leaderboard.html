@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+{% include 'navbar.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ExploreXP Leaderboard</title>
+</head>
+<body>
+  <ul>
+    {% for obj in USERS_ORDER %}
+      <li>{{ obj.username }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
