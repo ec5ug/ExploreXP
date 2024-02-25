@@ -214,11 +214,13 @@ function capitalizeEachWord(str) {
                         categoryList.appendChild(categoryHeading);
 
                         data.locations.forEach(function(place) {
+                        var listItem = document.createElement("li");
                         var placeItem = document.createElement("a");
                         placeItem.style.fontSize = "30px";
                         placeItem.textContent = place.name + '\n'; // Adjust this based on your place object
                         placeItem.href = `/placePage/?name_slug=${place.name}`;
                         categoryList.appendChild(placeItem);
+                        categoryList.appendChild(listItem);
                     });
 
                     } else {
@@ -265,10 +267,12 @@ document.querySelectorAll('.category-link').forEach(function(button) {
                 data.locations.forEach(function(place) {
                      if (place.name) {
                      var placeItem = document.createElement("a");
+                     var listItem = document.createElement("li");
                      placeItem.style.fontSize = "30px";
                      placeItem.textContent = place.name + '\n';
                      placeItem.href = `/placePage/?name_slug=${place.name}`;
                      categoryList.appendChild(placeItem);
+                     categoryList.appendChild(listItem);
 
                       }
                 });
