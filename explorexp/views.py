@@ -8,11 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.views import generic, View
-<<<<<<< HEAD
-from .models import Category, Challenge, UserProfile, Post
-=======
 from .models import Category, UserProfile, Post, Challenge
->>>>>>> master
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -22,11 +18,7 @@ from django.views import generic, View
 from .models import Category, Place
 from django.http import JsonResponse
 from django.template.defaultfilters import slugify
-<<<<<<< HEAD
-=======
 import re
-
->>>>>>> master
 
 def home(request):
     return render(request, 'home.html')
@@ -100,12 +92,8 @@ def view_profile(request, username):
         "USER_PROFILE": user_found,
         "CHALLENGES_COMPLETED": challenges_completed,
         "total_points_completed": total_points_completed,
-<<<<<<< HEAD
         "USER_POSTS": posts,
         "BADGES": badges
-=======
-        "USER_POSTS": posts
->>>>>>> master
     }
     return render(request, 'profile.html', context=context)
 
