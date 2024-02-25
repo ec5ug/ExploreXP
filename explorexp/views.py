@@ -76,6 +76,8 @@ def view_profile(request, username):
     for challenge in challenges_completed:
         if challenge.category.name == 'Libraries':
             badges['Libraries'] = 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzRyNTNxNGE2dTQ0bnBwdTQ4ejc1bm56cjFwaWZwN2twZTBwd29lMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4KGVH1hRpRke7ZnaUv/giphy.gif'
+        if challenge.category.name == 'Café':
+            badges['Café'] = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGZ0cTFkbWJ6MnBsMnU2aDI2MzlxOG41bHg3YXE3OHEybDI1aG4zdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/oZTBoGcs5dcXhaiYxz/giphy.gif"
 
     context = {
         "USER_PROFILE": user_found,
