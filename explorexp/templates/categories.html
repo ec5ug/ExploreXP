@@ -27,20 +27,35 @@
       color: #333;
     }
 
-    .category-link {
-      display: inline-block;
-      padding: 10px 20px;
-      margin: 10px;
-      background-color: #f46e1e;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-    }
+            #map-container {
+            height: 80vh; /* 80% of the viewport height */
+            width: 50vw; /* 50% of the viewport width */
+            display: inline-block;
+            vertical-align: top; /* Align to the top of the map */
+        }
 
-    .category-link:hover {
-      background-color: #f46e1e;
-    }
+        #category-list {
+            display: inline-block;
+            vertical-align: top; /* Align to the top of the map */
+            padding: 20px;
+            width: 40vw; /* Adjust the width of the list as needed */
+            overflow-y: auto; /* Add scroll if the list exceeds the height */
+        }
+
+        .category-link {
+        display: inline-block; /* Display buttons inline */
+        margin-right: 10px; /* Add margin to separate buttons */
+        padding: 10px 20px;
+        background-color: #f46e1e;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+        }
+
+        .category-link:hover {
+            background-color: #f46e1e;
+        }
  </style>
 
 <script>
@@ -159,7 +174,7 @@ function initMap(locations) {
 
     var mapOptions = {
         center: { lat: 38.0336, lng: -78.5080 },
-        zoom: 15,
+        zoom: 14,
         styles: [
             {
                 featureType: 'poi',
@@ -204,17 +219,23 @@ function initMap(locations) {
 
     <style>
         #map {
-            height: 80%;
-            width: 50%;
+            height: 100%;
+            width: 100%;
         }
 
          </style>
 
-    <div class="linkholder">
-        <div class="mapholder">
+<div class="linkholder">
+        <div class="mapholder" id="map-container">
             <div id="map"></div>
         </div>
+
+        <div class="text" id="category-list">
+            <h1><center>Places:</center></h1>
+            <!-- Add content to the category list as needed -->
+        </div>
     </div>
+
 
 <script>
 // Attach click event to all elements with the 'category-link' class
