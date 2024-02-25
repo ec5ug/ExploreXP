@@ -9,4 +9,4 @@ class PlaceForm(forms.ModelForm):
 class ChallengeForm(forms.ModelForm):
     class Meta:
         model = Challenge
-        fields = ['name', 'description', 'place', 'points']
+        fields = ['name', 'category', 'description', 'place', 'points']

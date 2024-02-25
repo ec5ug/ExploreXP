@@ -128,8 +128,10 @@ class PlacePageView(View):
 def view_place(request):
     if request.method == 'POST':
         p_obj = Place.objects.filter(name=request.POST['place'])[0]
+        c_obj = Category.objects.filter(name=request.POST['category'])[0]
         alt_response = request.POST.copy()
         alt_response['place'] = p_obj
+        alt_response['category'] = c_obj
         print(alt_response)
         form = ChallengeForm(alt_response)
         if form.is_valid():

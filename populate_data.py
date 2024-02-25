@@ -16,15 +16,15 @@ def populate_categories():
         Category.objects.create(name=category)
 
 def populate_places():
-    Place.objects.create(lat=38.03521267616765, long=-78.50043159071825, name='1515', name_slug='1515')
-    Place.objects.create(lat=40.44614167722916, long=-79.94873133149169, name='Crêpes Parisiennes', name_slug='crêpes_parisiennes')
-    Place.objects.create(lat=40.760799382692824, long=-73.97720105984551, name='New York City Public Library', name_slug='new_york_city_public_library')
-    Place.objects.create(lat=40.781338639190814, long=-73.97399671761092, name='American Museum of Natural History', name_slug='american_museum_of_natural_history')
-    Place.objects.create(lat=38.03289080184863, long=-78.51357280426573, name='Aquatic Fitness Center', name_slug='aquatic_fitness_center')
-    Place.objects.create(lat=40.43510922356903, long=-79.9417576917797, name='Schenley Park', name_slug='schenley_park')
-    Place.objects.create(lat=38.02984964576892, long=-78.47885264979851, name='Decades Arcade', name_slug='decades_arcade')
-    Place.objects.create(lat=40.42785065391026, long=-79.70121367133262, name='Burgatory', name_slug='burgatory')
-    Place.objects.create(lat=38.90847883310629, long=-77.04243919577, name='Cafe Citron', name_slug='cafe_citron')
+    Place.objects.create(lat=38.03521267616765, long=-78.50043159071825, type='university', name='1515', name_slug='1515')
+    Place.objects.create(lat=40.44614167722916, long=-79.94873133149169, type='bakery', name='Crêpes Parisiennes', name_slug='crêpes_parisiennes')
+    Place.objects.create(lat=40.760799382692824, long=-73.97720105984551, type='library', name='New York City Public Library', name_slug='new_york_city_public_library')
+    Place.objects.create(lat=40.781338639190814, long=-73.97399671761092, type='museum', name='American Museum of Natural History', name_slug='american_museum_of_natural_history')
+    Place.objects.create(lat=38.03289080184863, long=-78.51357280426573, type='gym', name='Aquatic Fitness Center', name_slug='aquatic_fitness_center')
+    Place.objects.create(lat=40.43510922356903, long=-79.9417576917797, type='park', name='Schenley Park', name_slug='schenley_park')
+    Place.objects.create(lat=38.02984964576892, long=-78.47885264979851, type = 'attraction',name='Decades Arcade', name_slug='decades_arcade')
+    Place.objects.create(lat=40.42785065391026, long=-79.70121367133262, type='restaurant', name='Burgatory', name_slug='burgatory')
+    Place.objects.create(lat=38.90847883310629, long=-77.04243919577, type='cafe', name='Cafe Citron', name_slug='cafe_citron')
 
 def populate_challenges():
     Challenge.objects.create(name='Study for the exam that stresses you out the most', category=Category.objects.get(name='Study Spaces'), description='Bring your laptop and textbooks over! Study for at least one hour.', place=Place.objects.get(name='1515'), points=10)

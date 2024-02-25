@@ -49,6 +49,11 @@
             background-color: #f46e1e;
         }
  </style>
+
+<script>
+     var categoryTypes = ['Study Spaces', 'Lounges', 'Café', 'Libraries', 'Museums', 'Gyms', 'Parks', 'Arcades', 'Restaurants', 'Night Life'];
+</script>
+
 <head>
     <meta charset="UTF-8">
     <title>{{PLACE_NAME}}</title>
@@ -69,10 +74,26 @@
             <input type="text" id="c_name" name="name" required>
             <label for="c_desc">Description:</label>
             <input type="text" id="c_desc" name="description" required>
+            <div class="dropdown-content" id="categoryForm">
+                <select id="id_type" name="category" required>
+                    <option disabled selected value>Categories</option>
+                    <option value="Study Spaces">Study Spaces</option>
+                    <option value="Lounges">Lounges</option>
+                    <option value="Cafés">Cafés</option>
+                    <option value="Libraries">Libraries</option>
+                    <option value="Museums">Museums</option>
+                    <option value="Gyms">Gyms</option>
+                    <option value="Parks">Parks</option>
+                    <option value="Arcades">Arcades</option>
+                    <option value="Restaurants">Restaurants</option>
+                    <option value="Night Life">Night Life</option>
+                </select>
+            </div>
             <input type="hidden" id="place" name="place" value= "{{ PLACE_OBJECT }}">
             <input type="hidden" id="c_points" name="points" value="3">
             <button type="submit">Submit Challenge</button>
         </form>
+
     </div>
     <div class="text" style="border:solid" id="show-comments">
         <h1>Adventure Chronicles</h1>
