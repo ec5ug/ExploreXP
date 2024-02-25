@@ -25,6 +25,12 @@
             height: 200px; /* Set the height of the badge */
             border-radius: 50%; /* Make the badge circular */
             object-fit: cover; /* Ensure the image fills the circular area */
+            cursor: pointer;
+            transition: all 0.3s ease; /* Add transition for smooth effect */
+        }
+
+        .badge-image:hover {
+            transform: scale(1.1); /* Scale the button by 10% when hovered */
         }
 
         .badge-name {
