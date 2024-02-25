@@ -59,9 +59,19 @@
 <body>
     <div class="text" style="border:solid" id="show-challenges">
         <h1>Challenges</h1>
+        <ul>
+            {% for challenge in CHALLENGES %}
+                <li>{{ challenge.name }} - {{ challenge.description }}</li>
+            {% endfor %}
+        </ul>
     </div>
     <div class="text" style="border:solid" id="show-comments">
         <h1>Adventure Chronicles</h1>
+        <ul>
+            {% for post in CHRONICLES %}
+                <li>{{ post.date }} - {{ post.place}} - {{ post.challenge.name }} - {{ post.comment }}</li>
+            {% endfor %}
+        </ul>
     </div>
 </body>
 </html>
