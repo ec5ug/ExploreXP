@@ -63,10 +63,16 @@
                 <li>{{ challenge.name }} - {{ challenge.description }}</li>
             {% endfor %}
         </ul>
-        <form action="/url" method="POST">
-            <input type="text" name="first_name" placeholder="Add a challenge!" required>
-            <button type="submit">Submit</button>
-    </form>
+        <form method="post">
+            {% csrf_token %}
+            <label for="c_name">Challenge Name:</label>
+            <input type="text" id="c_name" name="name" required>
+            <label for="c_desc">Description:</label>
+            <input type="text" id="c_desc" name="description" required>
+            <input type="hidden" id="place" name="place" value= "{{ PLACE_OBJECT }}">
+            <input type="hidden" id="c_points" name="points" value="3">
+            <button type="submit">Submit Challenge</button>
+        </form>
     </div>
     <div class="text" style="border:solid" id="show-comments">
         <h1>Adventure Chronicles</h1>
