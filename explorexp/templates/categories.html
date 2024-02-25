@@ -104,6 +104,11 @@
   </form>
 
 <script>
+function formatCategoryName(category) {
+    // Capitalize each word and replace underscores with spaces
+    return category.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
 function capitalizeEachWord(str) {
     return str.replace(/\b\w/g, function (match) {
         return match.toUpperCase();
@@ -118,7 +123,12 @@ function capitalizeEachWord(str) {
     });
 
         function submitForm() {
-            var selectedCategory = document.getElementById("id_type").value;
+        var selectedCategory = document.getElementById("id_type").value;;
+
+        var formattedCategory = formatCategoryName(selectedCategory);
+
+        // Update the selected category display
+        document.getElementById("selectedCategory").textContent = formattedCategory;
 
             // Make an AJAX request to the backend to get locations for the selected category
             fetch(`/get_locations/?category=${selectedCategory}`)
@@ -144,6 +154,10 @@ function capitalizeEachWord(str) {
 document.querySelectorAll('.category-link').forEach(function(button) {
     button.addEventListener('click', function() {
         var selectedCategory = this.dataset.locationType;
+        var formattedCategory = formatCategoryName(selectedCategory);
+
+        // Update the selected category display
+        document.getElementById("selectedCategory").textContent = formattedCategory;
 
         // Make an AJAX request to the backend to get locations for the selected category
         fetch(`/get_locations/?category=${selectedCategory}`)
@@ -231,7 +245,8 @@ function initMap(locations) {
         </div>
 
         <div class="text" id="category-list">
-            <h1><center>Places:</center></h1>
+            <h1><center><p id="selectedCategory"> Choose a Category! </p></center></h1>
+
             <!-- Add content to the category list as needed -->
         </div>
     </div>
